@@ -15,7 +15,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	else
 		tszFileName = argv[1];
-	LOGDEBUG(_T("FileName: %s."), tszFileName);
+	LOGINFO(_T("FileName: %s."), tszFileName);
 	int iTotalLines = 0;
 	std::vector<PokeReg::CPokeRegKey> regList;
 	if(!PokeReg::PokeRegHelper::PopulateVectorFromFile(tszFileName, regList, iTotalLines))
@@ -23,18 +23,18 @@ int _tmain(int argc, _TCHAR* argv[])
 		LOGERROR(_T("Unable to populate array from file."));
 		PauseAndReturn(-2);
 	}
-	LOGDEBUG(_T("Total %d valid entries"), regList.size());
+	LOGINFO(_T("Total %d valid entries"), regList.size());
 	bool bIsWow64Machine = PokeReg::PokeRegHelper::IsWow64();
 	int iTotal = 0, iProtected = 0, iNotProtected = 0, iNotPresent = 0;
 	for(std::vector<PokeReg::CPokeRegKey>::iterator itr = regList.begin(); itr < regList.end(); itr++)
 	{
 		bool bIsKeyPresent = false;
 		iTotal++;
-		LOGDEBUG(_T("Poking registry key: %s."), itr->ToString());
+		LOGINFO(_T("Poking registry key: %s."), itr->ToString());
 		if(itr->TestProtection(bIsWow64Machine, bIsKeyPresent))
 		{
 			iProtected++;
-			LOGSUCCESS(_T("Protection is available"));
+			LOGINFO(_T("Protection is available"));
 		}
 		else if(bIsKeyPresent)
 		{
@@ -47,5 +47,6 @@ int _tmain(int argc, _TCHAR* argv[])
 			LOGERROR(_T("Key is not available"));
 		}
 	}
+	LOGINFO(_T("iTotalLines = %d\niTotal = %d\niProtected = %d\niNotProtected = %d\niNotPresent = %d"), iTotalLines, iTotal, iProtected, iNotProtected, iNotPresent);
 	PauseAndReturn(0);
 }

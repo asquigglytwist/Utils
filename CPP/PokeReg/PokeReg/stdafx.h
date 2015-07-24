@@ -32,15 +32,18 @@
 #define CURRENT_CONTROL_SET SYSTEM L"CurrentControlSet\\"
 #define CONTROL_SET_00 SYSTEM L"ControlSet00"
 
+/*
 #ifndef _DEBUG
 #define _DEBUG
 #endif
+*/
 #define VERBOSE_LOGGING
 
-#define PauseAndReturn(ReturnValue) { _tprintf(_T("\nPaused; Press any key to continue...\n")); _getch(); return ReturnValue; }
 #define PRINT_NEW_LINE { _tprintf(_T("\n")); }
-#define LOGSUCCESS(x, ...) { _tprintf(_T("[SUCCESS]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
-#define LOGERROR(x, ...) { _tprintf(_T("[ERROR]:  ")); _tprintf(x, __VA_ARGS__); _tprintf(L"\n"); }
+#define LOGINFO(x, ...) { _tprintf(_T("[INFO]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
+#define LOGPASS(x, ...) { _tprintf(_T("[PASS]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
+#define LOGFAIL(x, ...) { _tprintf(_T("[FAIL]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
+#define LOGERROR(x, ...) { _tprintf(_T("[EROR]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
 
 #ifdef _DEBUG
 #ifdef VERBOSE_LOGGING
@@ -48,9 +51,11 @@
 #else
 #define LogVerbose(tszFormat, ...)
 #endif
-	#define LOGDEBUG(x, ...) { _tprintf(L"[DEBUG]:  "); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
+	#define LOGDEBUG(tszFormat, ...) { _tprintf(L"[DBUG]:  "); _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
+	#define PauseAndReturn(ReturnValue) { _tprintf(_T("\nPaused; Press any key to continue...\n")); _getch(); return ReturnValue; }
 #else
-	#define LogDebug(tszFormat, ...)
+	#define PauseAndReturn(ReturnValue) { /*_tprintf(_T("\nPaused; Press any key to continue...\n")); _getch();*/ return ReturnValue; }
+	#define LOGDEBUG(tszFormat, ...)
 	#define LogVerbose(tszFormat, ...)
 #endif
 
