@@ -24,7 +24,7 @@ namespace PokeReg
 			}
 			else
 			{
-				LOGSUCCESS(_T("Failed as expected."));
+				LOGPASS(_T("Failed as expected."));
 				return true;
 			}
 		}
