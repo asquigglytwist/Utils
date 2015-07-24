@@ -9,19 +9,26 @@ namespace PokeReg
 	struct PokeRegHelper
 	{
 	public:
-		static bool PopulateVectorFromFile(_TCHAR* tszFileName, std::vector<CPokeRegKey>& regList)
+		static bool PopulateVectorFromFile(_TCHAR* tszFileName, std::vector<CPokeRegKey>& regList, int& iTotalLines)
 		{
-			std::vector<CPokeRegKey> myregList;
 			if((!tszFileName) || !(*tszFileName))
 			{
-				LogDebug(_T("File name is either Null or Empty; Bailing out."));
+				LOGDEBUG(_T("File name is either Null or Empty; Bailing out."));
 				return false;
 			}
 			std::wifstream ifInFile(tszFileName);
+			if(ifInFile.fail())
+			{
+				LOGDEBUG(_T("File not found."));
+				ifInFile.close();
+				return false;
+			}
+			iTotalLines = 0;
 			wchar_t szLine[BUFFER_SIZE];
 			while(!ifInFile.eof())
 			{
 				ifInFile.getline(szLine, BUFFER_SIZE);
+				iTotalLines++;
 				LogVerbose(_T("Line:  %s"), szLine);
 				int i = 0;
 				wchar_t wszDelims[] = L"\\/*";
@@ -29,6 +36,7 @@ namespace PokeReg
 				if(pokeregtemp)
 					regList.push_back(*pokeregtemp);
 			}
+			ifInFile.close();
 			return true;
 		}
 
