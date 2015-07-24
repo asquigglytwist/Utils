@@ -47,7 +47,7 @@ namespace PokeReg
 			m_wsStringRepresentation.clear();
 		}
 
-		std::wstring ToString()
+		const wchar_t* ToString()
 		{
 			if(m_wsStringRepresentation.empty())
 			{
