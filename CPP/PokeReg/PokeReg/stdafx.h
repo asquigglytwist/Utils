@@ -32,13 +32,6 @@
 #define CURRENT_CONTROL_SET SYSTEM L"CurrentControlSet\\"
 #define CONTROL_SET_00 SYSTEM L"ControlSet00"
 
-/*
-#ifndef _DEBUG
-#define _DEBUG
-#endif
-*/
-#define VERBOSE_LOGGING
-
 #define PRINT_NEW_LINE { _tprintf(_T("\n")); }
 #define LOGINFO(x, ...) { _tprintf(_T("[INFO]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
 #define LOGPASS(x, ...) { _tprintf(_T("[PASS]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
@@ -46,6 +39,7 @@
 #define LOGERROR(x, ...) { _tprintf(_T("[EROR]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
 
 #ifdef _DEBUG
+#define VERBOSE_LOGGING
 #ifdef VERBOSE_LOGGING
 	#define LogVerbose(tszFormat, ...) { _tprintf(_T("[VERBOSE]:  ")); _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
 #else
