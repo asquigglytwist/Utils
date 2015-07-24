@@ -17,7 +17,7 @@ namespace PokeReg
 			LOGDEBUG(_T("Creating string value for Key: \"%s\""), this->ToString());
 			if(ERROR_SUCCESS == regKey.SetStringValue(TEST_NAME, TEST_VALUE))
 			{
-				LOGERROR(_T("Succeeded when expected to Fail.."));
+				LOGDEBUG(_T("Succeeded when expected to Fail.."));
 				LogVerbose(_T("Cleaning up the residues."));
 				regKey.DeleteValue(_T("Test"));
 				return false;
@@ -31,12 +31,12 @@ namespace PokeReg
 		else if (ERROR_FILE_NOT_FOUND == lResult)
 		{
 			bIsKeyPresent = false;
-			LOGERROR(_T("Key : %s not found."), this->ToString());
+			LOGDEBUG(_T("Key : %s not found."), this->ToString());
 		}
 		else
 		{
 			bIsKeyPresent = true;
-			LOGERROR(_T("Unable to open key : %s."), this->ToString());
+			LOGDEBUG(_T("Unable to open key : %s."), this->ToString());
 		}
 		return false;
 	}

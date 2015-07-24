@@ -55,7 +55,7 @@ namespace PokeReg
 				m_wsStringRepresentation.append(L"\\");
 				m_wsStringRepresentation.append(m_wsPath);
 			}
-			return m_wsStringRepresentation;
+			return m_wsStringRepresentation.c_str();
 		}
 
 		bool TestProtection(bool bTestWowNode, bool& bIsKeyPresent);

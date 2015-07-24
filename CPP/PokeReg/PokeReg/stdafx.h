@@ -17,6 +17,9 @@
 #include <atlstr.h>
 
 // TODO: reference additional headers your program requires here
+#ifndef UNICODE
+#define UNICODE
+#endif
 #include <xstring>
 #include <vector>
 #include <fstream>
@@ -34,18 +37,18 @@
 #endif
 #define VERBOSE_LOGGING
 
-#define PauseAndReturn(ReturnValue) { wprintf(L"\nPaused; Press any key to continue...\n"); _getch(); return ReturnValue; }
-#define LOGDEBUG(x, ...) { wprintf(L"[DEBUG]:  %s\n", x, __VA_ARGS__); }
-#define LOGSUCCESS(x, ...) { wprintf(L"[SUCCESS]:  %s\n", x, __VA_ARGS__); }
-#define LOGERROR(x, ...) { wprintf(L"[ERROR]:  %s\n", x, __VA_ARGS__); }
+#define PauseAndReturn(ReturnValue) { _tprintf(_T("\nPaused; Press any key to continue...\n")); _getch(); return ReturnValue; }
+#define PRINT_NEW_LINE { _tprintf(_T("\n")); }
+#define LOGSUCCESS(x, ...) { _tprintf(_T("[SUCCESS]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
+#define LOGERROR(x, ...) { _tprintf(_T("[ERROR]:  ")); _tprintf(x, __VA_ARGS__); _tprintf(L"\n"); }
 
 #ifdef _DEBUG
 #ifdef VERBOSE_LOGGING
-	#define LogVerbose(tszFormat, ...) { _tprintf(L"[VERBOSE]:  "); _tprintf(tszFormat, __VA_ARGS__); _tprintf(L"\n"); }
+	#define LogVerbose(tszFormat, ...) { _tprintf(_T("[VERBOSE]:  ")); _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
 #else
 #define LogVerbose(tszFormat, ...)
 #endif
-	#define LogDebug(tszFormat, ...) { _tprintf(L"[DEBUG]:  "); _tprintf(tszFormat, __VA_ARGS__); _tprintf(L"\n"); }
+	#define LOGDEBUG(x, ...) { _tprintf(L"[DEBUG]:  "); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
 #else
 	#define LogDebug(tszFormat, ...)
 	#define LogVerbose(tszFormat, ...)
