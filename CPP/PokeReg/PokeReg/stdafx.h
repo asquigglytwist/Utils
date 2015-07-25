@@ -33,10 +33,18 @@
 #define CONTROL_SET_00 SYSTEM L"ControlSet00"
 
 #define PRINT_NEW_LINE { _tprintf(_T("\n")); }
+#define LOG(x, ...) { _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
 #define LOGINFO(x, ...) { _tprintf(_T("[INFO]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
 #define LOGPASS(x, ...) { _tprintf(_T("[PASS]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
 #define LOGFAIL(x, ...) { _tprintf(_T("[FAIL]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
 #define LOGERROR(x, ...) { _tprintf(_T("[EROR]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
+#define LOGDEBUG(config, tszFormat, ...) {\
+	_TCHAR tszDebugMsg[BUFFER_SIZE];\
+	swprintf_s(tszDebugMsg, BUFFER_SIZE, tszFormat, __VA_ARGS__);\
+	std::wstring wsDebugMsg = config->GetTimeStamp(); wsDebugMsg.append(_T("[DBUG]  ")); wsDebugMsg.append(tszDebugMsg);\
+	if(config->GetDebugEnabled()) { _tprintf(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
+	if(config->GetDebugViewEnabled()) { OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
+}
 
 #ifdef _DEBUG
 #define VERBOSE_LOGGING
@@ -45,13 +53,8 @@
 #else
 #define LogVerbose(tszFormat, ...)
 #endif
-	#define LOGDEBUG(tszFormat, ...) { _tprintf(L"[DBUG]:  "); _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
 	#define PauseAndReturn(ReturnValue) { _tprintf(_T("\nPaused; Press any key to continue...\n")); _getch(); return ReturnValue; }
 #else
 	#define PauseAndReturn(ReturnValue) { /*_tprintf(_T("\nPaused; Press any key to continue...\n")); _getch();*/ return ReturnValue; }
-	#define LOGDEBUG(tszFormat, ...)
 	#define LogVerbose(tszFormat, ...)
 #endif
-
-
-#define INPUT_FILE_NAME L"RegKeys.txt"
