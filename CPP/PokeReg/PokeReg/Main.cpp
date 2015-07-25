@@ -13,13 +13,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	LOGINFO(_T("FileName: %s."), wsFileName);
 	int iTotalLines = 0;
 	std::vector<PokeReg::CPokeRegKey> regList;
-	if(!PokeReg::PokeRegHelper::PopulateVectorFromFile(wsFileName, regList, iTotalLines))
+	if(PokeReg::PokeRegHelper::PopulateVectorFromFile(wsFileName, regList, iTotalLines))
 	{
 		LOGERROR(_T("Unable to populate array from file."));
-		PauseAndReturn(-2);
+		PauseAndReturn(config, -1);
 	}
 	LOGINFO(_T("Total %d valid entries"), regList.size());
-	bool bIsWow64Machine = (PokeReg::PokeRegHelper::IsWow64() != 0);
+	bool bIsWow64Machine;
+	PokeReg::PokeRegHelper::IsWow64(bIsWow64Machine);
 	int iTotal = 0, iProtected = 0, iNotProtected = 0, iNotPresent = 0;
 	for(std::vector<PokeReg::CPokeRegKey>::iterator itr = regList.begin(); itr < regList.end(); itr++)
 	{
@@ -43,5 +44,5 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 	}
 	LOG(_T("iTotalLines = %d\niTotal = %d\niProtected = %d\niNotProtected = %d\niNotPresent = %d"), iTotalLines, iTotal, iProtected, iNotProtected, iNotPresent);
-	PauseAndReturn(0);
+	PauseAndReturn(config, SUCCESS);
 }
