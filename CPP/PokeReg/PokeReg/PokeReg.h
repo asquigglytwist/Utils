@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "ConfigHelper.h"
 
 namespace PokeReg
 {
@@ -29,7 +30,7 @@ namespace PokeReg
 		RegRoot m_rrRoot;
 		std::wstring m_wsPath, m_wsStringRepresentation;
 
-		bool Test(HKEY hParent, std::wstring& wsPath, bool& bIsKeyPresent);
+		bool Test(ConfigHelper*, HKEY hParent, std::wstring& wsPath, bool& bIsKeyPresent);
 
 	public:
 		CPokeRegKey(std::wstring& line)
@@ -58,6 +59,6 @@ namespace PokeReg
 			return m_wsStringRepresentation.c_str();
 		}
 
-		bool TestProtection(bool bTestWowNode, bool& bIsKeyPresent);
+		bool TestProtection(ConfigHelper* config, bool bTestWowNode, bool& bIsKeyPresent);
 	};
 }
