@@ -42,8 +42,8 @@
 	_TCHAR tszDebugMsg[BUFFER_SIZE];\
 	swprintf_s(tszDebugMsg, BUFFER_SIZE, tszFormat, __VA_ARGS__);\
 	std::wstring wsDebugMsg = config->GetTimeStamp(); wsDebugMsg.append(_T("[DBUG]  ")); wsDebugMsg.append(tszDebugMsg);\
-	if(config->GetDebugEnabled()) { _tprintf(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
-	if(config->GetDebugViewEnabled()) { OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
+	if(config->IsDebugEnabled()) { _tprintf(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
+	if(config->IsDebugViewEnabled()) { OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
 }
 
 #ifdef _DEBUG
@@ -53,8 +53,23 @@
 #else
 #define LogVerbose(tszFormat, ...)
 #endif
-	#define PauseAndReturn(ReturnValue) { _tprintf(_T("\nPaused; Press any key to continue...\n")); _getch(); return ReturnValue; }
 #else
-	#define PauseAndReturn(ReturnValue) { /*_tprintf(_T("\nPaused; Press any key to continue...\n")); _getch();*/ return ReturnValue; }
 	#define LogVerbose(tszFormat, ...)
 #endif
+
+#define PauseAndReturn(config, ReturnValue) {\
+		if(!config->IsInBotMode())\
+		{\
+			_tprintf(_T("\nPaused; Press any key to continue...\n"));\
+			_getch();\
+		}\
+		return ReturnValue;\
+	}
+
+enum ReturnCodes {
+	SUCCESS = 0,
+	NO_INPUT_FILE,
+	INPUT_FILE_NOT_FOUND,
+	WOW_CHECK_FAILED,
+	Last_Do_Not_Use
+};
