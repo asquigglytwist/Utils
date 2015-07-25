@@ -9,19 +9,19 @@ namespace PokeReg
 	struct PokeRegHelper
 	{
 	public:
-		static bool PopulateVectorFromFile(const std::wstring& wsFileName, std::vector<CPokeRegKey>& regList, int& iTotalLines)
+		static int PopulateVectorFromFile(const std::wstring& wsFileName, std::vector<CPokeRegKey>& regList, int& iTotalLines)
 		{
 			if(wsFileName.empty())
 			{
 				LOGERROR(_T("File name is empty; Bailing out."));
-				return false;
+				return NO_INPUT_FILE;
 			}
 			std::wifstream ifInFile(wsFileName);
 			if(ifInFile.fail())
 			{
 				LOGERROR(_T("File not found."));
 				ifInFile.close();
-				return false;
+				return INPUT_FILE_NOT_FOUND;
 			}
 			iTotalLines = 0;
 			wchar_t szLine[BUFFER_SIZE];
@@ -37,7 +37,7 @@ namespace PokeReg
 					regList.push_back(*pokeregtemp);
 			}
 			ifInFile.close();
-			return true;
+			return SUCCESS;
 		}
 
 		static inline CPokeRegKey* Tokenize(const std::wstring wsSource, const wchar_t* wszDelimiter = L" ")
@@ -64,28 +64,14 @@ namespace PokeReg
 						return new CPokeRegKey((RegRoot)i, wsStringToken);
 					}
 				}
-				//if(wsRoot.length() > 3)
-				//{
-				//	if(wsRoot.at(0) == L'*' && wsRoot.at(1) == L'*')
-				//	{
-				//		LogError(_T("Registry Key that starts with ** cannot be tested by this tool."));
-				//	}
-				//	else
-				//	{
-				//		LogError(_T("Unable to recognize the root of the Registry Path: %s."), wsSource.c_str());
-				//	}
-				//}
-				//else
-				//{
-				//	LogError(_T("Detected root is too short"));//: %s."), (wsRoot.length() ? wsRoot : _T("")));
-				//}
 			}
 			return NULL;
 		}
 
-		static BOOL IsWow64()
+		static int IsWow64(bool& bIsWow64Machine)
 		{
 			BOOL bIsWow64 = FALSE;
+			int iRetVal = SUCCESS;
 
 			//IsWow64Process is not available on all supported versions of Windows.
 			//Use GetModuleHandle to get a handle to the DLL that contains the function
@@ -95,12 +81,14 @@ namespace PokeReg
 
 			if(NULL != fnIsWow64Process)
 			{
-				if (!fnIsWow64Process(GetCurrentProcess(),&bIsWow64))
+				if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
 				{
-					//handle error
+					LOGERROR(_T("Unable to determine if running as Wow64 process; Error: %d"), GetLastError());
+					iRetVal = WOW_CHECK_FAILED;
 				}
 			}
-			return bIsWow64;
+			bIsWow64Machine = (bIsWow64 != 0);
+			return iRetVal;
 		}
 	};
 }
