@@ -1,0 +1,22 @@
+HKCR\\CLSID**
+
+HKLMS\\Microsoft\\Windows\\CurrentVersion**
+HKCUS\\Microsoft\\Windows\\CurrentVersion**
+
+HKCUS\\Microsoft\\Internet Explorer\\Main**
+
+HKLMS\\Policies\\Microsoft\\Internet Explorer**
+
+HKCR\\Interface**
+HKLMS\\Classes\\Interface**
+HKCUS\\Classes\\Interface**
+
+HKCR\\TypeLib**
+HKLMS\\Classes\\TypeLib**
+HKCUS\\Classes\\TypeLib**
+
+HKCR\\CLSID**
+HKLMS\\Classes\\CLSID**
+HKCUS\\Classes\\CLSID**
+
+HKCCS\\services\\BITS**
