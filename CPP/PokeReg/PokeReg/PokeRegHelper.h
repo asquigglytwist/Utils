@@ -9,17 +9,17 @@ namespace PokeReg
 	struct PokeRegHelper
 	{
 	public:
-		static int PopulateVectorFromFile(const std::wstring& wsFileName, std::vector<CPokeRegKey>& regList, int& iTotalLines)
+		static int PopulateVectorFromFile(ConfigHelper* config, const std::wstring& wsFileName, std::vector<CPokeRegKey>& regList, int& iTotalLines)
 		{
 			if(wsFileName.empty())
 			{
-				LOGERROR(_T("File name is empty; Bailing out."));
+				LOGEROR(config, _T("File name is empty; Bailing out."));
 				return NO_INPUT_FILE;
 			}
 			std::wifstream ifInFile(wsFileName);
 			if(ifInFile.fail())
 			{
-				LOGERROR(_T("File not found."));
+				LOGEROR(config, _T("File not found."));
 				ifInFile.close();
 				return INPUT_FILE_NOT_FOUND;
 			}
