@@ -34,17 +34,20 @@
 
 #define PRINT_NEW_LINE { _tprintf(_T("\n")); }
 #define LOG(x, ...) { _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
-#define LOGINFO(x, ...) { _tprintf(_T("[INFO]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
-#define LOGPASS(x, ...) { _tprintf(_T("[PASS]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
-#define LOGFAIL(x, ...) { _tprintf(_T("[FAIL]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
-#define LOGERROR(x, ...) { _tprintf(_T("[EROR]:  ")); _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
-#define LOGDEBUG(config, tszFormat, ...) {\
+#define LOG_WITH_LEVEL(Level, config, tszFormat, ...) {\
 	_TCHAR tszDebugMsg[BUFFER_SIZE];\
 	swprintf_s(tszDebugMsg, BUFFER_SIZE, tszFormat, __VA_ARGS__);\
-	std::wstring wsDebugMsg = config->GetTimeStamp(); wsDebugMsg.append(_T("[DBUG]  ")); wsDebugMsg.append(tszDebugMsg);\
+	std::wstring wsDebugMsg = config->GetTimeStamp(); wsDebugMsg.append(Level); wsDebugMsg.append(tszDebugMsg);\
 	if(config->IsDebugEnabled()) { _tprintf(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
 	if(config->IsDebugViewEnabled()) { OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
 }
+#define LOGINFO(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[INFO]  "), config, tszFormat, __VA_ARGS__); }
+#define LOGPASS(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[PASS]  "), config, tszFormat, __VA_ARGS__); }
+#define LOGFAIL(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[FAIL]  "), config, tszFormat, __VA_ARGS__); }
+#define LOGEROR(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[EROR]  "), config, tszFormat, __VA_ARGS__); }
+#define LOGDBUG(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[DBUG]  "), config, tszFormat, __VA_ARGS__); }
+
+#define LOGERROR(tszFormat, ...) { _tprintf(_T("[ERROR]  ")); _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
 
 #ifdef _DEBUG
 #define VERBOSE_LOGGING
