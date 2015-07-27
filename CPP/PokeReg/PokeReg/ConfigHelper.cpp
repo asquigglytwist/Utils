@@ -11,7 +11,7 @@ namespace PokeReg
 	{
 		if(argc < 2 || !argv)
 		{
-			LOGINFO(_T("No commandline options were recieved."));
+			LOGINFO(this, _T("No commandline options were recieved."));
 			return false;
 		}
 		for(int i = 1; i < argc; i++)
@@ -19,40 +19,40 @@ namespace PokeReg
 			_TCHAR* tszCmd = argv[i];
 			if(!_tcsicmp(tszCmd, CLA_IN_FILE))
 			{
-				LOGDEBUG(this, _T("Argument at %d is %s."), i, CLA_IN_FILE);
+				LOGDBUG(this, _T("Argument at %d is %s."), i, CLA_IN_FILE);
 				i++;
 				m_wsInFileName = argv[i];
-				LOGINFO(_T("Input FileName detected: %s."), m_wsInFileName.c_str());
+				LOGINFO(this, _T("Input FileName detected: %s."), m_wsInFileName.c_str());
 			}
 			else if(!_tcsicmp(tszCmd, CLA_OUT_FILE))
 			{
-				LOGDEBUG(this, _T("Argument at %d is %s."), i, CLA_OUT_FILE);
+				LOGDBUG(this, _T("Argument at %d is %s."), i, CLA_OUT_FILE);
 				i++;
 				m_wsOutFileName = argv[i];
 				m_bEnableFileLogging = true;
-				LOGINFO(_T("Output FileName detected: %s."), m_wsOutFileName.c_str());
+				LOGINFO(this, _T("Output FileName detected: %s."), m_wsOutFileName.c_str());
 			}
 			else if(!_tcsicmp(tszCmd, CLA_ENABLE_DEBUG_OUT))
 			{
-				LOGDEBUG(this, _T("Argument at %d is %s."), i, CLA_ENABLE_DEBUG_OUT);
+				LOGDBUG(this, _T("Argument at %d is %s."), i, CLA_ENABLE_DEBUG_OUT);
 				m_bEnableDebug = true;
-				LOGINFO(_T("Debug Output Enabled."));
+				LOGINFO(this, _T("Debug Output Enabled."));
 			}
 			else if(!_tcsicmp(tszCmd, CLA_ENABLE_DEBUG_VIEW))
 			{
-				LOGDEBUG(this, _T("Argument at %d is %s."), i, CLA_ENABLE_DEBUG_VIEW);
+				LOGDBUG(this, _T("Argument at %d is %s."), i, CLA_ENABLE_DEBUG_VIEW);
 				m_bEnableDebugView = true;
-				LOGINFO(_T("Debug Output Enabled."));
+				LOGINFO(this, _T("Debug Output Enabled."));
 			}
 			else if(!_tcsicmp(tszCmd, CLA_MODE_BOT))
 			{
-				LOGDEBUG(this, _T("Argument at %d is %s."), i, CLA_MODE_BOT);
+				LOGDBUG(this, _T("Argument at %d is %s."), i, CLA_MODE_BOT);
 				m_bBotMode = true;
-				LOGINFO(_T("Bot Mode Enabled."));
+				LOGINFO(this, _T("Bot Mode Enabled."));
 			}
 			else
 			{
-				LOGINFO(_T("Invalid command line parameter: %s."), argv[i]);
+				LOGINFO(this, _T("Invalid command line parameter: %s."), argv[i]);
 				DisplayUsage();
 			}
 		}
@@ -60,7 +60,7 @@ namespace PokeReg
 		{
 			if(m_wsOutFileName.empty())
 			{
-				LOGDEBUG(this, _T("No Output FileName provided; Falling back to default: %s."), OUTPUT_FILE_NAME_DEF);
+				LOGDBUG(this, _T("No Output FileName provided; Falling back to default: %s."), OUTPUT_FILE_NAME_DEF);
 				m_wsOutFileName = OUTPUT_FILE_NAME_DEF;
 			}
 		}

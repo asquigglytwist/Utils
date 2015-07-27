@@ -14,29 +14,29 @@ namespace PokeReg
 		{
 			bIsKeyPresent = true;
 			regKey.Attach(hActualKey);
-			LOGDEBUG(config, _T("Creating string value for Key: \"%s\""), this->ToString());
+			LOGDBUG(config, _T("Creating string value for Key: \"%s\""), this->ToString());
 			if(ERROR_SUCCESS == regKey.SetStringValue(TEST_NAME, TEST_VALUE))
 			{
-				LOGDEBUG(config, _T("Succeeded when expected to Fail.."));
+				LOGDBUG(config, _T("Succeeded when expected to Fail.."));
 				LogVerbose(_T("Cleaning up the residues."));
 				regKey.DeleteValue(_T("Test"));
 				return false;
 			}
 			else
 			{
-				LOGDEBUG(config, _T("Failed as expected."));
+				LOGDBUG(config, _T("Failed as expected."));
 				return true;
 			}
 		}
 		else if (ERROR_FILE_NOT_FOUND == lResult)
 		{
 			bIsKeyPresent = false;
-			LOGDEBUG(config, _T("Key : %s not found."), this->ToString());
+			LOGDBUG(config, _T("Key : %s not found."), this->ToString());
 		}
 		else
 		{
 			bIsKeyPresent = true;
-			LOGDEBUG(config, _T("Unable to open key : %s."), this->ToString());
+			LOGDBUG(config, _T("Unable to open key : %s."), this->ToString());
 		}
 		return false;
 	}
@@ -114,7 +114,7 @@ namespace PokeReg
 			}
 			break;
 		default:
-			LOGERROR(_T("Unknown Registry Root value supplied; Unable to Test."));
+			LOGEROR(config, _T("Unknown Registry Root value supplied; Unable to Test."));
 			break;
 		}
 		return bRetValue;
