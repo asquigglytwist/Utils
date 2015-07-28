@@ -33,13 +33,14 @@
 #define CONTROL_SET_00 SYSTEM L"ControlSet00"
 
 #define PRINT_NEW_LINE { _tprintf(_T("\n")); }
-#define LOG(x, ...) { _tprintf(x, __VA_ARGS__); PRINT_NEW_LINE; }
+#define LOG(tszFormat, ...) { _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
 #define LOG_WITH_LEVEL(Level, config, tszFormat, ...) {\
 	_TCHAR tszDebugMsg[BUFFER_SIZE];\
 	swprintf_s(tszDebugMsg, BUFFER_SIZE, tszFormat, __VA_ARGS__);\
 	std::wstring wsDebugMsg = config->GetTimeStamp(); wsDebugMsg.append(Level); wsDebugMsg.append(tszDebugMsg);\
-	if(config->IsDebugEnabled()) { _tprintf(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
+	if(config->IsDebugEnabled()) { LOG(wsDebugMsg.c_str()); }\
 	if(config->IsDebugViewEnabled()) { OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
+	if(config->IsFileLoggingEnabled()) { config->LogToFile(wsDebugMsg.c_str()); }\
 }
 #define LOGINFO(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[INFO]  "), config, tszFormat, __VA_ARGS__); }
 #define LOGPASS(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[PASS]  "), config, tszFormat, __VA_ARGS__); }
@@ -47,7 +48,7 @@
 #define LOGEROR(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[EROR]  "), config, tszFormat, __VA_ARGS__); }
 #define LOGDBUG(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[DBUG]  "), config, tszFormat, __VA_ARGS__); }
 
-#define LOGERROR(tszFormat, ...) { _tprintf(_T("[ERROR]  ")); _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
+//#define LOGERROR(tszFormat, ...) { _tprintf(_T("[ERROR]  ")); LOG(tszFormat, __VA_ARGS__); }
 
 #ifdef _DEBUG
 #define VERBOSE_LOGGING
@@ -74,5 +75,6 @@ enum ReturnCodes {
 	NO_INPUT_FILE,
 	INPUT_FILE_NOT_FOUND,
 	WOW_CHECK_FAILED,
+	GET_CWD_FAILED,
 	Last_Do_Not_Use
 };
