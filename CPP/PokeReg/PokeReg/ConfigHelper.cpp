@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 #include "ConfigHelper.h"
 
+typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+LPFN_ISWOW64PROCESS fnIsWow64Process;
+
 namespace PokeReg
 {
 	void ConfigHelper::DisplayUsage()
@@ -63,6 +66,7 @@ namespace PokeReg
 				LOGDBUG(this, _T("No Output FileName provided; Falling back to default: %s."), OUTPUT_FILE_NAME_DEF);
 				m_wsOutFileName = OUTPUT_FILE_NAME_DEF;
 			}
+			m_fsOutFile.open(m_wsOutFileName, std::ios::out | std::ios::app);
 		}
 		return true;
 	}
@@ -73,7 +77,7 @@ namespace PokeReg
 		struct tm now;
 		if(_localtime64_s(&now, &t))
 		{
-			LOGERROR(_T("Unable to get time stamp."));
+			LOG(_T("[ERROR]  Unable to get time stamp."));
 			return _T("");
 		}
 		std::wstringstream wssNow;
@@ -88,4 +92,38 @@ namespace PokeReg
 				<< L"]  ";
 		return wssNow.str();
 	}
+
+		ReturnCodes GetCurrentWorkingDirectory(ConfigHelper* config, std::wstring& wsCWD)
+		{
+			_TCHAR szCwd[BUFFER_SIZE];
+			DWORD dwNumCharsInPath = GetModuleFileName(NULL, szCwd, BUFFER_SIZE);
+			if(dwNumCharsInPath)
+			{
+				wsCWD = szCwd;
+				return SUCCESS;
+			}
+			return GET_CWD_FAILED;
+		}
+
+		ReturnCodes IsWow64(bool& bIsWow64Machine)
+		{
+			BOOL bIsWow64 = FALSE;
+			ReturnCodes iRetVal = SUCCESS;
+
+			//IsWow64Process is not available on all supported versions of Windows.
+			//Use GetModuleHandle to get a handle to the DLL that contains the function
+			//and GetProcAddress to get a pointer to the function if available.
+
+			fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
+
+			if(NULL != fnIsWow64Process)
+			{
+				if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
+				{
+					iRetVal = WOW_CHECK_FAILED;
+				}
+			}
+			bIsWow64Machine = (bIsWow64 != 0);
+			return iRetVal;
+		}
 }

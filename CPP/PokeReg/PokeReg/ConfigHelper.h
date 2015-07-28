@@ -2,9 +2,10 @@
 #include "stdafx.h"
 #include <ctime>
 #include <sstream>
+#include <iostream>
 
 #define INPUT_FILE_NAME_DEF _T("RegKeys.txt")
-#define OUTPUT_FILE_NAME_DEF _T("Debug.log")
+#define OUTPUT_FILE_NAME_DEF _T("Unique.log")
 
 // CLA Prefix for Command Line Argument
 #define CLA_IN_FILE _T("--infile")
@@ -17,8 +18,10 @@ namespace PokeReg
 {
 	class ConfigHelper
 	{
+	private:
 		bool m_bEnableDebug, m_bEnableDebugView, m_bEnableFileLogging, m_bBotMode;
 		std::wstring m_wsInFileName, m_wsOutFileName;
+		std::ofstream m_fsOutFile;
 		bool Init(int argc, _TCHAR* argv[]);
 		void DisplayUsage();
 	public:
@@ -33,13 +36,28 @@ namespace PokeReg
 			m_wsOutFileName.clear();
 			Init(argc, argv);
 		}
-		ConfigHelper::~ConfigHelper(void) {}
+		ConfigHelper::~ConfigHelper(void)
+		{
+			if(m_fsOutFile.is_open())
+			{
+				m_fsOutFile.flush();
+				m_fsOutFile.close();
+			}
+		}
 
 		inline bool IsDebugEnabled() { return m_bEnableDebug; }
 		inline bool IsDebugViewEnabled() { return m_bEnableDebugView; }
+		inline bool IsFileLoggingEnabled() { return m_bEnableFileLogging; }
 		inline bool IsInBotMode() { return m_bBotMode; }
 		inline const std::wstring GetInputFileName() { return m_wsInFileName; }
 
+		void LogToFile(const _TCHAR* szMsg)
+		{
+			m_fsOutFile<<szMsg<<std::endl;
+		}
+
 		static std::wstring GetTimeStamp();
+		static ReturnCodes IsWow64(bool& bIsWow64Machine);
+		static ReturnCodes GetCurrentWorkingDirectory(ConfigHelper* config, std::wstring& wsCWD);
 	};
 }
