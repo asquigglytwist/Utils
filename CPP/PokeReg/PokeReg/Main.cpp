@@ -20,7 +20,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	LOGINFO(config, _T("Total %d valid entries"), regList.size());
 	bool bIsWow64Machine;
-	PokeReg::PokeRegHelper::IsWow64(bIsWow64Machine);
+	ReturnCodes rcWowCheckResult = PokeReg::ConfigHelper::IsWow64(bIsWow64Machine);
+	if(SUCCESS != rcWowCheckResult)
+	{
+		LOGEROR(config, _T("Unable to determine if running as Wow64 process; Error: %d."), GetLastError());
+		bIsWow64Machine = false;
+	}
 	int iTotal = 0, iProtected = 0, iNotProtected = 0, iNotPresent = 0;
 	for(std::vector<PokeReg::CPokeRegKey>::iterator itr = regList.begin(); itr < regList.end(); itr++)
 	{
