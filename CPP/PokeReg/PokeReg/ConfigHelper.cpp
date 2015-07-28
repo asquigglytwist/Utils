@@ -93,37 +93,37 @@ namespace PokeReg
 		return wssNow.str();
 	}
 
-		ReturnCodes GetCurrentWorkingDirectory(ConfigHelper* config, std::wstring& wsCWD)
+	ReturnCodes ConfigHelper::GetCurrentWorkingDirectory(ConfigHelper* config, std::wstring& wsCWD)
+	{
+		_TCHAR szCwd[BUFFER_SIZE];
+		DWORD dwNumCharsInPath = GetModuleFileName(NULL, szCwd, BUFFER_SIZE);
+		if(dwNumCharsInPath)
 		{
-			_TCHAR szCwd[BUFFER_SIZE];
-			DWORD dwNumCharsInPath = GetModuleFileName(NULL, szCwd, BUFFER_SIZE);
-			if(dwNumCharsInPath)
-			{
-				wsCWD = szCwd;
-				return SUCCESS;
-			}
-			return GET_CWD_FAILED;
+			wsCWD = szCwd;
+			return SUCCESS;
 		}
+		return GET_CWD_FAILED;
+	}
 
-		ReturnCodes IsWow64(bool& bIsWow64Machine)
+	ReturnCodes ConfigHelper::IsWow64(bool& bIsWow64Machine)
+	{
+		BOOL bIsWow64 = FALSE;
+		ReturnCodes iRetVal = SUCCESS;
+
+		//IsWow64Process is not available on all supported versions of Windows.
+		//Use GetModuleHandle to get a handle to the DLL that contains the function
+		//and GetProcAddress to get a pointer to the function if available.
+
+		fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
+
+		if(NULL != fnIsWow64Process)
 		{
-			BOOL bIsWow64 = FALSE;
-			ReturnCodes iRetVal = SUCCESS;
-
-			//IsWow64Process is not available on all supported versions of Windows.
-			//Use GetModuleHandle to get a handle to the DLL that contains the function
-			//and GetProcAddress to get a pointer to the function if available.
-
-			fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
-
-			if(NULL != fnIsWow64Process)
+			if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
 			{
-				if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
-				{
-					iRetVal = WOW_CHECK_FAILED;
-				}
+				iRetVal = WOW_CHECK_FAILED;
 			}
-			bIsWow64Machine = (bIsWow64 != 0);
-			return iRetVal;
 		}
+		bIsWow64Machine = (bIsWow64 != 0);
+		return iRetVal;
+	}
 }
