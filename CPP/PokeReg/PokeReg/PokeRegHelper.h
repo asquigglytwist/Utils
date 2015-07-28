@@ -1,15 +1,12 @@
 #include "stdafx.h"
 #include <vector>
 
-typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
-LPFN_ISWOW64PROCESS fnIsWow64Process;
-
 namespace PokeReg
 {
 	struct PokeRegHelper
 	{
 	public:
-		static int PopulateVectorFromFile(ConfigHelper* config, const std::wstring& wsFileName, std::vector<CPokeRegKey>& regList, int& iTotalLines)
+		static int PopulateVectorFromFile(ConfigHelper* config, const std::wstring& wsFileName, std::vector<PokeReg::CPokeRegKey>& regList, int& iTotalLines)
 		{
 			if(wsFileName.empty())
 			{
@@ -66,29 +63,6 @@ namespace PokeReg
 				}
 			}
 			return NULL;
-		}
-
-		static int IsWow64(bool& bIsWow64Machine)
-		{
-			BOOL bIsWow64 = FALSE;
-			int iRetVal = SUCCESS;
-
-			//IsWow64Process is not available on all supported versions of Windows.
-			//Use GetModuleHandle to get a handle to the DLL that contains the function
-			//and GetProcAddress to get a pointer to the function if available.
-
-			fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
-
-			if(NULL != fnIsWow64Process)
-			{
-				if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
-				{
-					LOGERROR(_T("Unable to determine if running as Wow64 process; Error: %d"), GetLastError());
-					iRetVal = WOW_CHECK_FAILED;
-				}
-			}
-			bIsWow64Machine = (bIsWow64 != 0);
-			return iRetVal;
 		}
 	};
 }
