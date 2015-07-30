@@ -12,11 +12,13 @@ namespace PokeReg
 
 	bool ConfigHelper::Init(int argc, _TCHAR* argv[])
 	{
+#ifndef _DEBUG
 		if(argc < 2 || !argv)
 		{
 			LOGINFO(this, _T("No commandline options were recieved."));
 			return false;
 		}
+#endif
 		for(int i = 1; i < argc; i++)
 		{
 			_TCHAR* tszCmd = argv[i];
