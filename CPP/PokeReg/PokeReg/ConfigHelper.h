@@ -21,7 +21,7 @@ namespace PokeReg
 	private:
 		bool m_bEnableDebug, m_bEnableDebugView, m_bEnableFileLogging, m_bBotMode;
 		std::wstring m_wsInFileName, m_wsOutFileName;
-		std::ofstream m_fsOutFile;
+		std::wofstream m_fsOutFile;
 		bool Init(int argc, _TCHAR* argv[]);
 		void DisplayUsage();
 	public:
