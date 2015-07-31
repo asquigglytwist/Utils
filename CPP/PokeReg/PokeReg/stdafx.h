@@ -38,16 +38,22 @@
 	_TCHAR tszDebugMsg[BUFFER_SIZE];\
 	swprintf_s(tszDebugMsg, BUFFER_SIZE, tszFormat, __VA_ARGS__);\
 	std::wstring wsDebugMsg = config->GetTimeStamp(); wsDebugMsg.append(Level); wsDebugMsg.append(tszDebugMsg);\
-	if(config->IsDebugEnabled()) { LOG(wsDebugMsg.c_str()); }\
-	if(config->IsDebugViewEnabled()) { OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
-	if(config->IsFileLoggingEnabled()) { config->LogToFile(wsDebugMsg.c_str()); }\
+	LOG(wsDebugMsg.c_str());\
+	OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE;\
+	config->LogToFile(wsDebugMsg.c_str());\
 }
 #define LOGINFO(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[INFO]  "), config, tszFormat, __VA_ARGS__); }
 #define LOGPASS(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[PASS]  "), config, tszFormat, __VA_ARGS__); }
 #define LOGFAIL(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[FAIL]  "), config, tszFormat, __VA_ARGS__); }
 #define LOGEROR(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[EROR]  "), config, tszFormat, __VA_ARGS__); }
-#define LOGDBUG(config, tszFormat, ...) { LOG_WITH_LEVEL(_T("[DBUG]  "), config, tszFormat, __VA_ARGS__); }
-
+#define LOGDBUG(config, tszFormat, ...) {\
+	_TCHAR tszDebugMsg[BUFFER_SIZE];\
+	swprintf_s(tszDebugMsg, BUFFER_SIZE, tszFormat, __VA_ARGS__);\
+	std::wstring wsDebugMsg = config->GetTimeStamp(); wsDebugMsg.append(_T("[DBUG]  ")); wsDebugMsg.append(tszDebugMsg);\
+	if(config->IsDebugEnabled()) { LOG(wsDebugMsg.c_str()); }\
+	if(config->IsDebugViewEnabled()) { OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
+	if(config->IsFileLoggingEnabled()) { config->LogToFile(wsDebugMsg.c_str()); }\
+}
 //#define LOGERROR(tszFormat, ...) { _tprintf(_T("[ERROR]  ")); LOG(tszFormat, __VA_ARGS__); }
 
 #ifdef _DEBUG
