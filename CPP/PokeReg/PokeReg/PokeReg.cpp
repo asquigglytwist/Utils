@@ -3,6 +3,12 @@
 #include "stdafx.h"
 #include "PokeReg.h"
 
+#define TEST_NAME L"Test"
+#define TEST_VALUE TEST_NAME
+#define SYSTEM L"SYSTEM\\"
+#define CURRENT_CONTROL_SET SYSTEM L"CurrentControlSet\\"
+#define CONTROL_SET_00 SYSTEM L"ControlSet00"
+
 namespace PokeReg
 {
 	bool CPokeRegKey::Test(ConfigHelper* config, HKEY hParent, std::wstring& wsPath, bool& bIsKeyPresent)

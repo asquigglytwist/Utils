@@ -26,11 +26,6 @@
 #include <conio.h>
 
 #define BUFFER_SIZE 2048
-#define TEST_NAME L"Test"
-#define TEST_VALUE TEST_NAME
-#define SYSTEM L"SYSTEM\\"
-#define CURRENT_CONTROL_SET SYSTEM L"CurrentControlSet\\"
-#define CONTROL_SET_00 SYSTEM L"ControlSet00"
 
 #define PRINT_NEW_LINE { _tprintf(_T("\n")); }
 #define LOG(tszFormat, ...) { _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
