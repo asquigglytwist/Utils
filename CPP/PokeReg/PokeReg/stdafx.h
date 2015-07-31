@@ -49,15 +49,9 @@
 	if(config->IsDebugViewEnabled()) { OutputDebugString(wsDebugMsg.c_str()); PRINT_NEW_LINE; }\
 	if(config->IsFileLoggingEnabled()) { config->LogToFile(wsDebugMsg.c_str()); }\
 }
-//#define LOGERROR(tszFormat, ...) { _tprintf(_T("[ERROR]  ")); LOG(tszFormat, __VA_ARGS__); }
 
-#ifdef _DEBUG
-#define VERBOSE_LOGGING
 #ifdef VERBOSE_LOGGING
 	#define LogVerbose(tszFormat, ...) { _tprintf(_T("[VERBOSE]:  ")); _tprintf(tszFormat, __VA_ARGS__); PRINT_NEW_LINE; }
-#else
-#define LogVerbose(tszFormat, ...)
-#endif
 #else
 	#define LogVerbose(tszFormat, ...)
 #endif
