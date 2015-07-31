@@ -15,17 +15,18 @@ namespace PokeReg
 	{
 		HKEY hActualKey = NULL;
 		LONG lResult = RegOpenKeyEx(hParent, wsPath.c_str(), 0, KEY_READ, &hActualKey);
-		ATL::CRegKey regKey;
-		if(ERROR_SUCCESS == lResult)//regKey.Open(hParent, wsPath.c_str()))
+		RegCloseKey(hActualKey);
+		if(ERROR_SUCCESS == lResult)
 		{
 			bIsKeyPresent = true;
-			regKey.Attach(hActualKey);
-			LOGDBUG(config, _T("Creating string value for Key: \"%s\""), this->ToString());
+			ATL::CRegKey regKey;
+			regKey.Open(hParent, wsPath.c_str(), KEY_ALL_ACCESS);
+			LOGDBUG(config, _T("Creating string value under Key: \"%s\""), this->ToString());
 			if(ERROR_SUCCESS == regKey.SetStringValue(TEST_NAME, TEST_VALUE))
 			{
-				LOGDBUG(config, _T("Succeeded when expected to Fail.."));
+				LOGDBUG(config, _T("Succeeded when expected to Fail."));
 				LogVerbose(_T("Cleaning up the residues."));
-				regKey.DeleteValue(_T("Test"));
+				regKey.DeleteValue(TEST_NAME);
 				return false;
 			}
 			else
