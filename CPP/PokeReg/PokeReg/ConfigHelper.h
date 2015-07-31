@@ -36,6 +36,7 @@ namespace PokeReg
 			m_wsOutFileName.clear();
 			Init(argc, argv);
 		}
+
 		ConfigHelper::~ConfigHelper(void)
 		{
 			if(m_fsOutFile.is_open())
