@@ -31,12 +31,12 @@ namespace PokeReg
 		else if (ERROR_FILE_NOT_FOUND == lResult)
 		{
 			bIsKeyPresent = false;
-			LOGDBUG(config, _T("Key : %s not found."), this->ToString());
+			LOGDBUG(config, _T("Key not found."));//, this->ToString());
 		}
 		else
 		{
 			bIsKeyPresent = true;
-			LOGDBUG(config, _T("Unable to open key : %s."), this->ToString());
+			LOGDBUG(config, _T("Unable to open key."));//, this->ToString());
 		}
 		return false;
 	}
