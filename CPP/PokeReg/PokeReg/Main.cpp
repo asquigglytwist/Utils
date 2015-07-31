@@ -6,7 +6,7 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 #ifdef _DEBUG
-		MessageBox(NULL,L"Attach",L"Attach",MB_OK);
+	MessageBox(NULL,L"Attach",L"Attach",MB_OK);
 #endif
 	PokeReg::ConfigHelper* config = new PokeReg::ConfigHelper(argc, argv);
 	const std::wstring &wsFileName = config->GetInputFileName();
@@ -35,19 +35,19 @@ int _tmain(int argc, _TCHAR* argv[])
 		if(itr->TestProtection(config, bIsWow64Machine, bIsKeyPresent))
 		{
 			iProtected++;
-			LOGINFO(config, _T("Protection is available"));
+			LOGINFO(config, _T("Protection is available."));
 		}
 		else if(bIsKeyPresent)
 		{
 			iNotProtected++;
-			LOGEROR(config, _T("Protection is not available "));
+			LOGEROR(config, _T("Protection is not available."));
 		}
 		else
 		{
 			iNotPresent++;
-			LOGEROR(config, _T("Key is not available"));
+			LOGEROR(config, _T("Key is not available."));
 		}
 	}
-	LOG(_T("iTotalLines = %d\niTotal = %d\niProtected = %d\niNotProtected = %d\niNotPresent = %d"), iTotalLines, iTotal, iProtected, iNotProtected, iNotPresent);
+	LOG(_T("iTotalLines = %d\niTotal = %d\niProtected = %d\niNotProtected = %d\niNotPresent = %d."), iTotalLines, iTotal, iProtected, iNotProtected, iNotPresent);
 	PauseAndReturn(config, SUCCESS);
 }
