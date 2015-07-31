@@ -68,7 +68,7 @@ namespace PokeReg
 				LOGDBUG(this, _T("No Output FileName provided; Falling back to default: %s."), OUTPUT_FILE_NAME_DEF);
 				m_wsOutFileName = OUTPUT_FILE_NAME_DEF;
 			}
-			m_fsOutFile.open(m_wsOutFileName, std::ios::out | std::ios::app);
+			m_fsOutFile.open(m_wsOutFileName, std::ios::out | std::ios::trunc);
 		}
 		return true;
 	}
