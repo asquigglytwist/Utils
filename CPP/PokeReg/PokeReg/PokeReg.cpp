@@ -25,7 +25,7 @@ namespace PokeReg
 			LOGDBUG(config, _T("Creating string value under Key: \"%s\""), this->ToString());
 			if(ERROR_SUCCESS == regKey.SetStringValue(TEST_NAME, TEST_VALUE))
 			{
-				LOGDBUG(config, _T("Succeeded when expected to Fail."));
+				LOGDBUG(config, _T("SetValue succeeded when expected to Fail."));
 				LogVerbose(_T("Cleaning up the residues."));
 				regKey.DeleteValue(TEST_NAME);
 				//bRetVal = false;
@@ -54,7 +54,7 @@ namespace PokeReg
 			bIsKeyPresent = true;
 			LOGDBUG(config, _T("Unable to open key."));//, this->ToString());
 		}
-		return false;
+		return bRetVal;
 	}
 
 	bool CPokeRegKey::TestProtection(ConfigHelper* config, bool bTestWowNode, bool& bIsKeyPresent)
