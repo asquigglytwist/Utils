@@ -13,6 +13,7 @@ namespace PokeReg
 {
 	bool CPokeRegKey::Test(ConfigHelper* config, HKEY hParent, std::wstring& wsPath, bool& bIsKeyPresent)
 	{
+		bool bRetVal = false;
 		HKEY hActualKey = NULL;
 		LONG lResult = RegOpenKeyEx(hParent, wsPath.c_str(), 0, KEY_READ, &hActualKey);
 		RegCloseKey(hActualKey);
@@ -39,8 +40,9 @@ namespace PokeReg
 			else
 			{
 				LOGDBUG(config, _T("Failed as expected."));
-				return true;
+				bRetVal = true;
 			}
+			regKey.Close();
 		}
 		else if (ERROR_FILE_NOT_FOUND == lResult)
 		{
