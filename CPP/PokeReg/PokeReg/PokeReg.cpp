@@ -27,7 +27,14 @@ namespace PokeReg
 				LOGDBUG(config, _T("Succeeded when expected to Fail."));
 				LogVerbose(_T("Cleaning up the residues."));
 				regKey.DeleteValue(TEST_NAME);
-				return false;
+				//bRetVal = false;
+			}
+			else if(ERROR_SUCCESS == regKey.Create(regKey, TEST_NAME))
+			{
+				LOGDBUG(config, _T("SubKey creation succeeded when expected to Fail."));
+				LogVerbose(_T("Cleaning up the residues."));
+				regKey.DeleteSubKey(TEST_NAME);
+				//bRetVal = false;
 			}
 			else
 			{
