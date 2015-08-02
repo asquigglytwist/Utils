@@ -20,7 +20,7 @@ namespace PokeReg
 		int num_elements = sizeof( tszCmds ) / sizeof( tszCmds[0] );
 		for(int i = 0; i < num_elements; i++)
 		{
-			std::wcout<<tszCmds[i]<<L"\n\t"<<tszEffects[i]<<std::endl;
+			std::wcout<<tszCmds[i]<<L"\n\t\t"<<tszEffects[i]<<std::endl;
 		}
 	}
 
