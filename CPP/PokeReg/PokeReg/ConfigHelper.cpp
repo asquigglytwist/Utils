@@ -69,6 +69,12 @@ namespace PokeReg
 				m_bBotMode = true;
 				LOGINFO(this, _T("Bot Mode Enabled."));
 			}
+			else if(!_tcsicmp(tszCmd, CLA_HELP_TEXT) || !_tcsicmp(tszCmd, CLA_HELP_SYM))
+			{
+				LOG(_T("Displaying Help...\n"));
+				DisplayUsage();
+				return true;
+			}
 			else
 			{
 				LOGINFO(this, _T("Invalid command line parameter: %s."), argv[i]);
