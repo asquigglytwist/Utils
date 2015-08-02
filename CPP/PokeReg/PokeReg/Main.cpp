@@ -16,6 +16,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if(PokeReg::PokeRegHelper::PopulateVectorFromFile(config, wsFileName, regList, iTotalLines))
 	{
 		LOGEROR(config, _T("Unable to populate array from file."));
+		config->DisplayUsage();
 		PauseAndReturn(config, -1);
 	}
 	LOGINFO(config, _T("Total %d valid entries"), regList.size());
