@@ -23,7 +23,6 @@ namespace PokeReg
 		std::wstring m_wsInFileName, m_wsOutFileName;
 		std::wofstream m_fsOutFile;
 		bool Init(int argc, _TCHAR* argv[]);
-		void DisplayUsage();
 	public:
 #ifdef _DEBUG
 		ConfigHelper::ConfigHelper(int argc, _TCHAR* argv[]) : m_bEnableDebug(true), m_bEnableDebugView(true), m_bEnableFileLogging(true),
@@ -51,6 +50,7 @@ namespace PokeReg
 		inline bool IsFileLoggingEnabled() { return m_bEnableFileLogging; }
 		inline bool IsInBotMode() { return m_bBotMode; }
 		inline const std::wstring GetInputFileName() { return m_wsInFileName; }
+		void DisplayUsage();
 
 		void LogToFile(const _TCHAR* szMsg)
 		{
