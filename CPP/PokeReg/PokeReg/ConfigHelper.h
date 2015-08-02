@@ -13,6 +13,8 @@
 #define CLA_ENABLE_DEBUG_OUT _T("--enabledebugout")
 #define CLA_ENABLE_DEBUG_VIEW _T("--enabledebugview")
 #define CLA_MODE_BOT _T("--botmode")
+#define CLA_HELP_TEXT _T("--help")
+#define CLA_HELP_SYM _T("/?")
 
 namespace PokeReg
 {
