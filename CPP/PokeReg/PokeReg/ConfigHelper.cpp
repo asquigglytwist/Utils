@@ -8,19 +8,22 @@ namespace PokeReg
 {
 	void ConfigHelper::DisplayUsage()
 	{
-		std::wcout<<L"Commands\tEffects"<<std::endl;
-		_TCHAR* tszCmds[] = { CLA_IN_FILE, CLA_OUT_FILE, CLA_ENABLE_DEBUG_OUT, CLA_ENABLE_DEBUG_VIEW, CLA_MODE_BOT };
+		std::wcout<<L"The commands themselves are optional but their arg(s) if any, are not.\n"
+			<<L"Commands\tEffects"<<std::endl;
+		_TCHAR* tszCmds[] = { CLA_IN_FILE, CLA_OUT_FILE, CLA_ENABLE_DEBUG_OUT, CLA_ENABLE_DEBUG_VIEW, CLA_MODE_BOT, CLA_HELP_TEXT };
+		_TCHAR* tszCmdOpts[] = { _T("<File-Name> (required param if used)"), _T("<File-Name> (required param if used)"), _T(""), _T(""), _T(""), _T("") };
 		_TCHAR* tszEffects[] = {
 			_T("Spcifies the input file, followed by the file's name or path."),
 			_T("Spcifies the output (log) file, followed by the file's name or path."),
 			_T("Include to enable debug output."),
 			_T("Include to enable output on DebugView (OutputDebugString)."),
-			_T("To invoke program in BotMode i.e., non-interactive mode.")
+			_T("To invoke program in BotMode i.e., non-interactive mode."),
+			_T("Displays this help message regarding the tool usage.")
 		};
 		int num_elements = sizeof( tszCmds ) / sizeof( tszCmds[0] );
 		for(int i = 0; i < num_elements; i++)
 		{
-			std::wcout<<tszCmds[i]<<L"\n\t\t"<<tszEffects[i]<<std::endl;
+			std::wcout<<tszCmds[i]<<L"  "<<tszCmdOpts[i]<<L"\n\t\t"<<tszEffects[i]<<std::endl;
 		}
 	}
 
