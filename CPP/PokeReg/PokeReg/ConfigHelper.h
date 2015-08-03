@@ -21,17 +21,17 @@ namespace PokeReg
 	class ConfigHelper
 	{
 	private:
-		bool m_bEnableDebug, m_bEnableDebugView, m_bEnableFileLogging, m_bBotMode;
+		bool m_bEnableDebug, m_bEnableDebugView, m_bEnableFileLogging, m_bBotMode, m_bHelpMode;
 		std::wstring m_wsInFileName, m_wsOutFileName;
 		std::wofstream m_fsOutFile;
 		bool Init(int argc, _TCHAR* argv[]);
 	public:
 #ifdef _DEBUG
 		ConfigHelper::ConfigHelper(int argc, _TCHAR* argv[]) : m_bEnableDebug(true), m_bEnableDebugView(true), m_bEnableFileLogging(true),
-			m_bBotMode(false), m_wsInFileName(INPUT_FILE_NAME_DEF)
+			m_bBotMode(false), m_bHelpMode(false), m_wsInFileName(INPUT_FILE_NAME_DEF)
 #else
 		ConfigHelper::ConfigHelper(int argc, _TCHAR* argv[]) : m_bEnableDebug(false), m_bEnableDebugView(false), m_bEnableFileLogging(false),
-			m_bBotMode(false), m_wsInFileName(INPUT_FILE_NAME_DEF)
+			m_bBotMode(false), m_bHelpMode(false), m_wsInFileName(INPUT_FILE_NAME_DEF)
 #endif
 		{
 			m_wsOutFileName.clear();
@@ -51,6 +51,7 @@ namespace PokeReg
 		inline bool IsDebugViewEnabled() { return m_bEnableDebugView; }
 		inline bool IsFileLoggingEnabled() { return m_bEnableFileLogging; }
 		inline bool IsInBotMode() { return m_bBotMode; }
+		inline bool IsInHelpMode() { return m_bHelpMode; }
 		inline const std::wstring GetInputFileName() { return m_wsInFileName; }
 		void DisplayUsage();
 
