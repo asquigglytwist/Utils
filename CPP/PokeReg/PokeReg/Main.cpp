@@ -9,6 +9,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	MessageBox(NULL,L"Attach",L"Attach",MB_OK);
 #endif
 	PokeReg::ConfigHelper* config = new PokeReg::ConfigHelper(argc, argv);
+	if(config->IsInHelpMode())
+	{
+		PauseAndReturn(config, SUCCESS);
+	}
 	const std::wstring &wsFileName = config->GetInputFileName();
 	LOGINFO(config, _T("FileName: %s."), wsFileName.c_str());
 	int iTotalLines = 0;
