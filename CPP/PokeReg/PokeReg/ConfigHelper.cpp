@@ -71,13 +71,15 @@ namespace PokeReg
 			}
 			else if(!_tcsicmp(tszCmd, CLA_HELP_TEXT) || !_tcsicmp(tszCmd, CLA_HELP_SYM))
 			{
-				LOG(_T("Displaying Help...\n"));
+				m_bHelpMode = true;
+				LOG(_T("Switching to Help mode; Displaying usage...\n"));
 				DisplayUsage();
 				return true;
 			}
 			else
 			{
-				LOGINFO(this, _T("Invalid command line parameter: %s."), argv[i]);
+				m_bHelpMode = true;
+				LOGINFO(this, _T("Invalid command line parameter: %s; Switching to Help mode."), argv[i]);
 				DisplayUsage();
 			}
 		}
