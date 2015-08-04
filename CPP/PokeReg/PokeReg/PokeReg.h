@@ -17,10 +17,16 @@ namespace PokeReg
 
 	static wchar_t* wszRegRoots[] = {
 		L"HKCU",
+		L"HKEY_Current_User",
 		L"HKCR",
+		L"HKEY_Classes_Root",
 		L"HKLM",
+		L"HKEY_Local_Machine",
+		L"HKCUS",
 		L"HKCUS",
 		L"HKLMS",
+		L"HKLMS",
+		L"HKCCS",
 		L"HKCCS"
 	};
 
