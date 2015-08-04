@@ -54,9 +54,9 @@ namespace PokeReg
 						wsStringToken.append(wszToken);
 					}
 				}
-				for(int i = 0; i < PokeReg::Last_Do_Not_Use; i++)
+				for(int i = 0; i < PokeReg::Last_Do_Not_Use; i += 2)
 				{
-					if(!_wcsicmp(wszRegRoots[i], wszSourceDup))
+					if(!_wcsicmp(wszRegRoots[i], wszSourceDup) || !_wcsicmp(wszRegRoots[i + 1], wszSourceDup))
 					{
 						return new CPokeRegKey((RegRoot)i, wsStringToken);
 					}
