@@ -73,20 +73,20 @@ namespace Tyle
             // 
             this.mnuECopy.Name = "mnuECopy";
             this.mnuECopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.mnuECopy.Size = new System.Drawing.Size(235, 26);
+            this.mnuECopy.Size = new System.Drawing.Size(171, 26);
             this.mnuECopy.Text = "&Copy";
             this.mnuECopy.Click += new System.EventHandler(this.mnuECopy_Click);
             // 
             // tssAfterCopy
             // 
             this.tssAfterCopy.Name = "tssAfterCopy";
-            this.tssAfterCopy.Size = new System.Drawing.Size(232, 6);
+            this.tssAfterCopy.Size = new System.Drawing.Size(168, 6);
             // 
             // mnuEFind
             // 
             this.mnuEFind.Name = "mnuEFind";
             this.mnuEFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mnuEFind.Size = new System.Drawing.Size(235, 26);
+            this.mnuEFind.Size = new System.Drawing.Size(171, 26);
             this.mnuEFind.Text = "&Find";
             this.mnuEFind.Click += new System.EventHandler(this.mnuEFind_Click);
             // 
@@ -95,14 +95,16 @@ namespace Tyle
             this.mnuEFindNext.Enabled = false;
             this.mnuEFindNext.Name = "mnuEFindNext";
             this.mnuEFindNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mnuEFindNext.Size = new System.Drawing.Size(235, 26);
+            this.mnuEFindNext.Size = new System.Drawing.Size(171, 26);
             this.mnuEFindNext.Text = "Find &Next";
             this.mnuEFindNext.Click += new System.EventHandler(this.mnuEFindNext_Click);
             // 
             // lsvTailViewer
             // 
+            this.lsvTailViewer.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lsvTailViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvTailViewer.Font = new System.Drawing.Font("Courier New", 12F);
+            this.lsvTailViewer.ForeColor = System.Drawing.Color.Black;
             this.lsvTailViewer.FullRowSelect = true;
             this.lsvTailViewer.GridLines = true;
             this.lsvTailViewer.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;

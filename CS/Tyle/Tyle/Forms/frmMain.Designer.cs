@@ -45,6 +45,7 @@
             this.mnuWArrangeIcons = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.tbcMDIChildren = new System.Windows.Forms.TabControl();
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -185,11 +186,25 @@
             this.dlgOpenFile.Filter = "Common Log File Types (.txt; .log)|*.txt;*.log|All files (*.*)|*.*";
             this.dlgOpenFile.Multiselect = true;
             // 
+            // tbcMDIChildren
+            // 
+            this.tbcMDIChildren.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbcMDIChildren.Location = new System.Drawing.Point(0, 28);
+            this.tbcMDIChildren.Multiline = true;
+            this.tbcMDIChildren.Name = "tbcMDIChildren";
+            this.tbcMDIChildren.SelectedIndex = 0;
+            this.tbcMDIChildren.ShowToolTips = true;
+            this.tbcMDIChildren.Size = new System.Drawing.Size(897, 32);
+            this.tbcMDIChildren.TabIndex = 4;
+            this.tbcMDIChildren.Visible = false;
+            this.tbcMDIChildren.SelectedIndexChanged += new System.EventHandler(this.tbcMDIChildren_SelectedIndexChanged);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(897, 587);
+            this.Controls.Add(this.tbcMDIChildren);
             this.Controls.Add(this.stsMain);
             this.Controls.Add(this.mnuMain);
             this.IsMdiContainer = true;
@@ -197,6 +212,7 @@
             this.Name = "frmMain";
             this.Text = "Tyle";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.MdiChildActivate += new System.EventHandler(this.frmMain_MdiChildActivate);
             this.mnuMain.ResumeLayout(false);
             this.mnuMain.PerformLayout();
             this.ResumeLayout(false);
@@ -223,6 +239,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuWTileHorizontally;
         private System.Windows.Forms.ToolStripMenuItem mnuWTileVertically;
         private System.Windows.Forms.ToolStripMenuItem mnuWArrangeIcons;
+        private System.Windows.Forms.TabControl tbcMDIChildren;
     }
 }
 
