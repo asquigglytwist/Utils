@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Tyle
@@ -40,13 +34,30 @@ namespace Tyle
                     var tailForm = new frmTailViewer(this, file);
                     mapOpenFiles[temp] = tailForm;
                     tailForm.InitTailing();
+                    var newPage = new TabPage(tailForm.Text);
+                    newPage.ToolTipText = file;
+                    tbcMDIChildren.TabPages.Add(newPage);
+                    tbcMDIChildren.SelectedTab = newPage;
+                    tbcMDIChildren.Show();
                 }
             }
         }
 
-        public void NotifyStoppedTailing(string fileName)
+        public void NotifyStoppedTailing(string fileName, string title)
         {
             mapOpenFiles.Remove(fileName.ToLower());
+            foreach(TabPage page in tbcMDIChildren.TabPages)
+            {
+                if(page.Text.Equals(title))
+                {
+                    tbcMDIChildren.TabPages.Remove(page);
+                    break;
+                }
+            }
+            if(tbcMDIChildren.TabPages.Count < 1)
+            {
+                tbcMDIChildren.Hide();
+            }
         }
 
         #region MenuEventHandlers
@@ -96,5 +107,27 @@ namespace Tyle
             LayoutMdi(MdiLayout.ArrangeIcons);
         }
         #endregion
+
+        private void frmMain_MdiChildActivate(object sender, EventArgs e)
+        {
+            var temp = (ActiveMdiChild as frmTailViewer)?.Text;
+            foreach (TabPage page in tbcMDIChildren.TabPages)
+            {
+                if (page.Text.Equals(temp))
+                {
+                    tbcMDIChildren.SelectedTab = page;
+                    break;
+                }
+            }
+        }
+
+        private void tbcMDIChildren_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            frmTailViewer childForm;
+            if (tbcMDIChildren.SelectedTab != null && mapOpenFiles.TryGetValue(tbcMDIChildren.SelectedTab.ToolTipText.ToLower(), out childForm))
+            {
+                childForm.Activate();
+            }
+        }
     }
 }

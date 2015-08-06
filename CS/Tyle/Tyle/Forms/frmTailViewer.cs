@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using static Tyle.Dialogs.dlgFind;
 
@@ -44,9 +43,11 @@ namespace Tyle
                 longestLine = (longestLine.Length < temp.Length ? temp : longestLine);
                 lsLinesInFile.Add(temp);
             }
+            lsvTailViewer.BeginUpdate();
             lsvTailViewer.VirtualListSize = lsLinesInFile.Count;
             lsvTailViewer.AutoFitColumnsToContent(longestLine);
             lsvTailViewer.SelectVirtualItem(lsLinesInFile.Count - 1);
+            lsvTailViewer.EndUpdate();
             Show();
         }
 
@@ -85,7 +86,7 @@ namespace Tyle
         protected int NextSearchStartIndex { get; set; }
         #endregion
 
-        #region MenuEventHandlers
+        #region EventHandlers
         private void lsvTailViewer_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
             e.Item = new ListViewItem(e.ItemIndex.ToString());
@@ -93,11 +94,11 @@ namespace Tyle
             e.Item.ToolTipText = e.Item.Text;
             if (e.ItemIndex % 8 != 0)
             {
-                e.Item.SubItems.Add(lsLinesInFile[e.ItemIndex]);
+                e.Item.SubItems.Add(lsLinesInFile[e.ItemIndex], Color.Black, Color.White, lsvTailViewer.Font);
             }
             else
             {
-                e.Item.SubItems.Add(lsLinesInFile[e.ItemIndex], Color.Red, Color.Black, new Font("Verdana", 18, FontStyle.Bold));
+                e.Item.SubItems.Add(lsLinesInFile[e.ItemIndex], Color.LightYellow, Color.Black, lsvTailViewer.Font);
             }
         }
 
@@ -105,7 +106,7 @@ namespace Tyle
         {
             try
             {
-                MainForm.NotifyStoppedTailing(TailedFilePath);
+                MainForm.NotifyStoppedTailing(TailedFilePath, Text);
             }
             catch (Exception)
             {
