@@ -2,16 +2,16 @@
 
 namespace Tyle.UI
 {
-    public partial class dlgFind : Form
+    public partial class FindDialog : Form
     {
-        public static dlgFind FindDialog;
+        public static FindDialog findDialog;
 
-        static dlgFind()
+        static FindDialog()
         {
-            FindDialog = new dlgFind();
+            findDialog = new FindDialog();
         }
 
-        protected dlgFind()
+        protected FindDialog()
         {
             InitializeComponent();
         }

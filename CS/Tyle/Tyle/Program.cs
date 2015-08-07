@@ -20,9 +20,9 @@ namespace Tyle
     public static class AppMetaData
     {
         public const string ApplicationName = "Tyle";
-        public const string Description = "A Windows Tail Utility...";
-        public const string CompanyName = "L";
-        public const string CopyRight = "Copyright © " + AppMetaData.CompanyName + ", 2017; All rights reserved.";
-        public const string TradeMark = AppMetaData.ApplicationName + ", " + AppMetaData.CompanyName;
+        public const string Description = "Tail Your Logs Efficiently...";
+        public const string CompanyName = "LS";
+        public const string CopyRight = "Copyright © " + CompanyName + ", 2017; All rights reserved.";
+        public const string TradeMark = ApplicationName + ", " + CompanyName;
     }
 }
