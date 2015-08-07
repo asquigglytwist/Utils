@@ -46,10 +46,10 @@
             this.mnuWTileVertically = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWArrangeIcons = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHAabout = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.tbcMDIChildren = new System.Windows.Forms.TabControl();
             this.imlMainForm = new System.Windows.Forms.ImageList(this.components);
-            this.mnuHAabout = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -186,6 +186,14 @@
             this.mnuHelp.Size = new System.Drawing.Size(53, 24);
             this.mnuHelp.Text = "&Help";
             // 
+            // mnuHAabout
+            // 
+            this.mnuHAabout.Name = "mnuHAabout";
+            this.mnuHAabout.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
+            this.mnuHAabout.Size = new System.Drawing.Size(182, 26);
+            this.mnuHAabout.Text = "&About";
+            this.mnuHAabout.Click += new System.EventHandler(this.mnuHAabout_Click);
+            // 
             // dlgOpenFile
             // 
             this.dlgOpenFile.DefaultExt = "log";
@@ -212,14 +220,6 @@
             this.imlMainForm.TransparentColor = System.Drawing.Color.Transparent;
             this.imlMainForm.Images.SetKeyName(0, "NewLinesFound.png");
             // 
-            // mnuHAabout
-            // 
-            this.mnuHAabout.Name = "mnuHAabout";
-            this.mnuHAabout.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
-            this.mnuHAabout.Size = new System.Drawing.Size(182, 26);
-            this.mnuHAabout.Text = "&About";
-            this.mnuHAabout.Click += new System.EventHandler(this.mnuHAabout_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -228,6 +228,7 @@
             this.Controls.Add(this.tbcMDIChildren);
             this.Controls.Add(this.stsMain);
             this.Controls.Add(this.mnuMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.mnuMain;
             this.Name = "frmMain";
