@@ -22,7 +22,11 @@ namespace Tyle.UI
 
         private void OpenFilesForTailing(string[] fileNames)
         {
+#if DEBUG
             foreach(string file in fileNames)
+#else
+            System.Threading.Tasks.Parallel.ForEach(fileNames, file =>
+#endif
             {
                 var temp= file.ToLower();
                 if(mapOpenFiles.ContainsKey(temp))
@@ -33,14 +37,17 @@ namespace Tyle.UI
                 {
                     var tailForm = new frmTailViewer(this, file);
                     mapOpenFiles[temp] = tailForm;
-                    tailForm.InitTailing();
                     var newPage = new TabPage(tailForm.Text);
                     newPage.ToolTipText = file;
                     tbcMDIChildren.TabPages.Add(newPage);
                     tbcMDIChildren.SelectedTab = newPage;
                     tbcMDIChildren.Show();
                 }
+#if DEBUG
             }
+#else
+            });
+#endif
         }
 
         public void NotifyStoppedTailing(string fileName, string title)
@@ -57,6 +64,18 @@ namespace Tyle.UI
             if(tbcMDIChildren.TabPages.Count < 1)
             {
                 tbcMDIChildren.Hide();
+            }
+        }
+
+        public void NotifyFileUpdate(string title)
+        {
+            foreach(TabPage page in tbcMDIChildren.TabPages)
+            {
+                if(page.Text.Equals(title))
+                {
+                    page.ImageKey = "NewLinesFound.png";
+                    break;
+                }
             }
         }
 
@@ -106,7 +125,7 @@ namespace Tyle.UI
         {
             LayoutMdi(MdiLayout.ArrangeIcons);
         }
-        #endregion
+#endregion
 
         private void frmMain_MdiChildActivate(object sender, EventArgs e)
         {

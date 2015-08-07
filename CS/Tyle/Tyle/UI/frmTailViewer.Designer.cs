@@ -17,7 +17,7 @@ namespace Tyle.UI
         {
             if (tailedFile != null)
             {
-                tailedFile.Close();
+                tailedFile.Dispose();
             }
             if (disposing && (components != null))
             {
@@ -158,9 +158,7 @@ namespace Tyle.UI
             Dock = System.Windows.Forms.DockStyle.Fill;
             Font = new Font("Courier New", 12, FontStyle.Regular);
             ShowGroups = false;
-#if DEBUG
             GridLines = true;
-#endif
             HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             Columns.Add("LineNumber", -1, System.Windows.Forms.HorizontalAlignment.Left);
             Columns.Add("Line", -1, System.Windows.Forms.HorizontalAlignment.Left);
@@ -174,9 +172,12 @@ namespace Tyle.UI
         public void SelectVirtualItem(int index)
         {
             SelectedIndices.Clear();
-            SelectedIndices.Add(index);
-            EnsureVisible(index);
-            Items[index].Focused = true;
+            if (index > -1)
+            {
+                SelectedIndices.Add(index);
+                EnsureVisible(index);
+                Items[index].Focused = true;
+            }
             Focus();
         }
         protected SizeF MeasureString(string stringToMeasure)
@@ -188,6 +189,17 @@ namespace Tyle.UI
                 measuredSize = g.MeasureString(stringToMeasure, Font);
             }
             return measuredSize;
+        }
+        public int SearchBeginIndex
+        {
+            get
+            {
+                if(FocusedItem == null)
+                {
+                    return 0;
+                }
+                return ((FocusedItem.Index + 1) % VirtualListSize);
+            }
         }
     }
     #endregion
