@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using static Tyle.UI.dlgFind;
+using static Tyle.UI.FindDialog;
 
 namespace Tyle.UI
 {
@@ -69,7 +69,7 @@ namespace Tyle.UI
         {
             if (lsvTailViewer.VirtualListSize > 0)
             {
-                var foundItemIndex = tailedFile.FindItem(FindDialog.SearchText, lsvTailViewer.SearchBeginIndex, FindDialog.WrapSearch);
+                var foundItemIndex = tailedFile.FindItem(FindDialog.findDialog.SearchText, lsvTailViewer.SearchBeginIndex, FindDialog.findDialog.WrapSearch);
                 if (foundItemIndex != -1)
                 {
                     lsvTailViewer.SelectVirtualItem(foundItemIndex);
@@ -119,7 +119,7 @@ namespace Tyle.UI
 
         private void mnuEFind_Click(object sender, EventArgs e)
         {
-            if (FindDialog.ShowDialog(this) == DialogResult.OK)
+            if (FindDialog.findDialog.ShowDialog(this) == DialogResult.OK)
             {
                 if(FindNextItem())
                 {
@@ -130,7 +130,7 @@ namespace Tyle.UI
                 }
                 else
                 {
-                    MessageBox.Show(FindDialog.SearchText, "Unable to find string searched for", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(FindDialog.findDialog.SearchText, "Unable to find string searched for", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
         }

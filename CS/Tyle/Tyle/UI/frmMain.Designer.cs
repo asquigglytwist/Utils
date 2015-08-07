@@ -49,6 +49,7 @@
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.tbcMDIChildren = new System.Windows.Forms.TabControl();
             this.imlMainForm = new System.Windows.Forms.ImageList(this.components);
+            this.mnuHAabout = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -179,6 +180,8 @@
             // 
             // mnuHelp
             // 
+            this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuHAabout});
             this.mnuHelp.Name = "mnuHelp";
             this.mnuHelp.Size = new System.Drawing.Size(53, 24);
             this.mnuHelp.Text = "&Help";
@@ -208,6 +211,14 @@
             this.imlMainForm.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlMainForm.ImageStream")));
             this.imlMainForm.TransparentColor = System.Drawing.Color.Transparent;
             this.imlMainForm.Images.SetKeyName(0, "NewLinesFound.png");
+            // 
+            // mnuHAabout
+            // 
+            this.mnuHAabout.Name = "mnuHAabout";
+            this.mnuHAabout.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
+            this.mnuHAabout.Size = new System.Drawing.Size(182, 26);
+            this.mnuHAabout.Text = "&About";
+            this.mnuHAabout.Click += new System.EventHandler(this.mnuHAabout_Click);
             // 
             // frmMain
             // 
@@ -251,6 +262,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuWArrangeIcons;
         private System.Windows.Forms.TabControl tbcMDIChildren;
         private System.Windows.Forms.ImageList imlMainForm;
+        private System.Windows.Forms.ToolStripMenuItem mnuHAabout;
     }
 }
 

@@ -1,6 +1,6 @@
-﻿namespace Tyle.Dialogs
+﻿namespace Tyle.UI
 {
-    partial class dlgFind
+    partial class FindDialog
     {
         /// <summary>
         /// Required designer variable.

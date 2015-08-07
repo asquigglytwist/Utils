@@ -148,5 +148,10 @@ namespace Tyle.UI
                 childForm.Activate();
             }
         }
+
+        private void mnuHAabout_Click(object sender, EventArgs e)
+        {
+            AboutBox.AppAbout.ShowDialog();
+        }
     }
 }
