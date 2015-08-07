@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.stsMain = new System.Windows.Forms.StatusStrip();
             this.mnuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +48,7 @@
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.tbcMDIChildren = new System.Windows.Forms.TabControl();
+            this.imlMainForm = new System.Windows.Forms.ImageList(this.components);
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -189,6 +192,7 @@
             // tbcMDIChildren
             // 
             this.tbcMDIChildren.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbcMDIChildren.ImageList = this.imlMainForm;
             this.tbcMDIChildren.Location = new System.Drawing.Point(0, 28);
             this.tbcMDIChildren.Multiline = true;
             this.tbcMDIChildren.Name = "tbcMDIChildren";
@@ -198,6 +202,12 @@
             this.tbcMDIChildren.TabIndex = 4;
             this.tbcMDIChildren.Visible = false;
             this.tbcMDIChildren.SelectedIndexChanged += new System.EventHandler(this.tbcMDIChildren_SelectedIndexChanged);
+            // 
+            // imlMainForm
+            // 
+            this.imlMainForm.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlMainForm.ImageStream")));
+            this.imlMainForm.TransparentColor = System.Drawing.Color.Transparent;
+            this.imlMainForm.Images.SetKeyName(0, "NewLinesFound.png");
             // 
             // frmMain
             // 
@@ -240,6 +250,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuWTileVertically;
         private System.Windows.Forms.ToolStripMenuItem mnuWArrangeIcons;
         private System.Windows.Forms.TabControl tbcMDIChildren;
+        private System.Windows.Forms.ImageList imlMainForm;
     }
 }
 

@@ -1,6 +1,5 @@
 ﻿using Tyle.Core;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -22,11 +21,12 @@ namespace Tyle.UI
             InitializeComponent();
             MdiParent = MainForm = mdiParentForm;
             lsvTailViewer.ShowGroups = false;
-            tailedFile = new TailedStream(fileToTail);
+            tailedFile = new TailedStream(fileToTail, this);
             Text = Path.GetFileName(fileToTail);
+            InitDisplay();
         }
 
-        public void InitTailing()
+        protected void InitDisplay()
         {
             WindowState = FormWindowState.Maximized;
             if (tailedFile.InitTailing())
@@ -36,13 +36,27 @@ namespace Tyle.UI
             Show();
         }
 
-        protected void UpdateTailView()
+        public void UpdateTailView()
         {
             lsvTailViewer.BeginUpdate();
-            lsvTailViewer.VirtualListSize = tailedFile.LineCount;
-            lsvTailViewer.AutoFitColumnsToContent(tailedFile.LongestLine);
-            lsvTailViewer.SelectVirtualItem(tailedFile.LineCount - 1);
-            lsvTailViewer.EndUpdate();
+            int lineCount = tailedFile.LineCount;
+            if(lsvTailViewer.VirtualListSize < lineCount)
+            {
+                MainForm.NotifyFileUpdate(Text);
+                lsvTailViewer.VirtualListSize = lineCount;
+                lsvTailViewer.AutoFitColumnsToContent(tailedFile.LongestLine);
+                lsvTailViewer.SelectVirtualItem(tailedFile.LineCount - 1);
+                lsvTailViewer.EndUpdate();
+                lsvTailViewer.Invalidate();
+            }
+            else if (lsvTailViewer.VirtualListSize > lineCount)
+            {
+                // TODO:  Request for a resurrection.
+            }
+            else
+            {
+                // No change; Just leave things be.
+            }
         }
 
         internal void ActivateAndMaximize()
@@ -55,7 +69,7 @@ namespace Tyle.UI
         {
             if (lsvTailViewer.VirtualListSize > 0)
             {
-                var foundItemIndex = tailedFile.FindNextItem();
+                var foundItemIndex = tailedFile.FindItem(FindDialog.SearchText, lsvTailViewer.SearchBeginIndex, FindDialog.WrapSearch);
                 if (foundItemIndex != -1)
                 {
                     lsvTailViewer.SelectVirtualItem(foundItemIndex);
@@ -68,7 +82,7 @@ namespace Tyle.UI
         #region EventHandlers
         private void lsvTailViewer_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
-            e.Item = new ListViewItem(e.ItemIndex.ToString());
+            e.Item = new ListViewItem((e.ItemIndex + 1).ToString());
             e.Item.UseItemStyleForSubItems = false;
             e.Item.ToolTipText = e.Item.Text;
             if (e.ItemIndex % 8 != 0)
@@ -107,7 +121,6 @@ namespace Tyle.UI
         {
             if (FindDialog.ShowDialog(this) == DialogResult.OK)
             {
-                tailedFile.NextSearchStartIndex = (lsvTailViewer.FocusedItem != null ? lsvTailViewer.FocusedItem.Index + 1 : tailedFile.NextSearchStartIndex);
                 if(FindNextItem())
                 {
                     if(!mnuEFindNext.Enabled)
