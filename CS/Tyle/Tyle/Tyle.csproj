@@ -47,33 +47,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dialogs\dlgFind.cs">
+    <Compile Include="Core\TailedStream.cs" />
+    <Compile Include="UI\dlgFind.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\dlgFind.Designer.cs">
+    <Compile Include="UI\dlgFind.Designer.cs">
       <DependentUpon>dlgFind.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmMain.cs">
+    <Compile Include="UI\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmMain.Designer.cs">
+    <Compile Include="UI\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmTailViewer.cs">
+    <Compile Include="UI\frmTailViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmTailViewer.Designer.cs">
+    <Compile Include="UI\frmTailViewer.Designer.cs">
       <DependentUpon>frmTailViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Dialogs\dlgFind.resx">
+    <EmbeddedResource Include="UI\dlgFind.resx">
       <DependentUpon>dlgFind.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.resx">
+    <EmbeddedResource Include="UI\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmTailViewer.resx">
+    <EmbeddedResource Include="UI\frmTailViewer.resx">
       <DependentUpon>frmTailViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
