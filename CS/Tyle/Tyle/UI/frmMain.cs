@@ -11,6 +11,8 @@ namespace Tyle.UI
         public frmMain()
         {
             InitializeComponent();
+            Icon = Properties.Resources.Tyle;
+            Text = AppMetaData.ApplicationName;
             ResetAppState();
         }
 
@@ -151,7 +153,7 @@ namespace Tyle.UI
 
         private void mnuHAabout_Click(object sender, EventArgs e)
         {
-            AboutBox.AppAbout.ShowDialog();
+            //AboutBox.AppAbout.ShowDialog();
         }
     }
 }

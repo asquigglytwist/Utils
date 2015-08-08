@@ -228,11 +228,9 @@
             this.Controls.Add(this.tbcMDIChildren);
             this.Controls.Add(this.stsMain);
             this.Controls.Add(this.mnuMain);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.mnuMain;
             this.Name = "frmMain";
-            this.Text = "Tyle";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.MdiChildActivate += new System.EventHandler(this.frmMain_MdiChildActivate);
             this.mnuMain.ResumeLayout(false);
