@@ -3,7 +3,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using static Tyle.UI.FindDialog;
 
 namespace Tyle.UI
 {
@@ -21,9 +20,35 @@ namespace Tyle.UI
             InitializeComponent();
             MdiParent = MainForm = mdiParentForm;
             lsvTailViewer.ShowGroups = false;
-            tailedFile = new TailedStream(fileToTail, this);
+            tailedFile = new TailedStream(fileToTail/*, this*/);
+            tailedFile.OnTailedFileChanged += TailedFile_OnTailedFileChanged;
             Text = Path.GetFileName(fileToTail);
             InitDisplay();
+        }
+
+        private void TailedFile_OnTailedFileChanged(object sender, TailedFileChangedArgs args)
+        {
+            switch (args.ChangeType)
+            {
+                case TailedFileChangeType.LastLineExtended:
+                case TailedFileChangeType.LinesAdded:
+                    // [BIB]:  https://stackoverflow.com/a/661662
+                    Invoke((MethodInvoker)delegate { UpdateTailView(); });
+                    //UpdateTailView();
+                    break;
+                case TailedFileChangeType.Shrunk:
+                    break;
+                case TailedFileChangeType.Renamed:
+                    MessageBox.Show("File has been Renamed.");
+                    break;
+                case TailedFileChangeType.Deleted:
+                    MessageBox.Show("File has been deleted.");
+                    Close();
+                    break;
+                case TailedFileChangeType.NoChange:
+                default:
+                    break;
+            }
         }
 
         protected void InitDisplay()
@@ -36,27 +61,29 @@ namespace Tyle.UI
             Show();
         }
 
-        public void UpdateTailView()
+        protected void UpdateTailView()
         {
-            lsvTailViewer.BeginUpdate();
+            //lsvTailViewer.BeginUpdate();
             int lineCount = tailedFile.LineCount;
-            if(lsvTailViewer.VirtualListSize < lineCount)
-            {
-                MainForm.NotifyFileUpdate(Text);
-                lsvTailViewer.VirtualListSize = lineCount;
-                lsvTailViewer.AutoFitColumnsToContent(tailedFile.LongestLine);
-                lsvTailViewer.SelectVirtualItem(tailedFile.LineCount - 1);
-                lsvTailViewer.EndUpdate();
-                lsvTailViewer.Invalidate();
-            }
-            else if (lsvTailViewer.VirtualListSize > lineCount)
-            {
-                // TODO:  Request for a resurrection.
-            }
-            else
-            {
-                // No change; Just leave things be.
-            }
+            //if(lsvTailViewer.VirtualListSize < lineCount)
+            //{
+            MainForm.NotifyFileUpdate(Text);
+            lsvTailViewer.VirtualListSize = lineCount;
+            lsvTailViewer.AutoFitColumnsToContent(tailedFile.LongestLine);
+            lsvTailViewer.SelectVirtualItem(tailedFile.LineCount - 1);
+            //    lsvTailViewer.EndUpdate();
+            //    lsvTailViewer.Invalidate();
+            //}
+            lsvTailViewer.Refresh();
+
+            //else if (lsvTailViewer.VirtualListSize > lineCount)
+            //{
+            //    // TODO:  Request for a resurrection.
+            //}
+            //else
+            //{
+            //    // No change; Just leave things be.
+            //}
         }
 
         internal void ActivateAndMaximize()
