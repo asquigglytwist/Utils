@@ -2,7 +2,7 @@
 
 namespace Tyle.UI
 {
-    partial class frmTailViewer
+    partial class TailViewerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -106,10 +106,10 @@ namespace Tyle.UI
             this.lsvTailViewer.Font = new System.Drawing.Font("Courier New", 12F);
             this.lsvTailViewer.ForeColor = System.Drawing.Color.Black;
             this.lsvTailViewer.FullRowSelect = true;
+            this.lsvTailViewer.GridLines = true;
             this.lsvTailViewer.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lsvTailViewer.Location = new System.Drawing.Point(0, 0);
             this.lsvTailViewer.Name = "lsvTailViewer";
-            this.lsvTailViewer.ShowGroups = false;
             this.lsvTailViewer.Size = new System.Drawing.Size(282, 253);
             this.lsvTailViewer.TabIndex = 0;
             this.lsvTailViewer.UseCompatibleStateImageBehavior = false;
@@ -117,7 +117,7 @@ namespace Tyle.UI
             this.lsvTailViewer.VirtualMode = true;
             this.lsvTailViewer.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lsvTailViewer_RetrieveVirtualItem);
             // 
-            // frmTailViewer
+            // TailViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -125,7 +125,7 @@ namespace Tyle.UI
             this.Controls.Add(this.lsvTailViewer);
             this.Controls.Add(this.mnuTailForm);
             this.MainMenuStrip = this.mnuTailForm;
-            this.Name = "frmTailViewer";
+            this.Name = "TailViewerForm";
             this.Text = "TailViewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmTailViewer_FormClosing);
             this.mnuTailForm.ResumeLayout(false);
@@ -158,6 +158,7 @@ namespace Tyle.UI
             Dock = System.Windows.Forms.DockStyle.Fill;
             Font = new Font("Courier New", 12, FontStyle.Regular);
             ShowGroups = false;
+            ShowItemToolTips = true;
             GridLines = true;
             HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             Columns.Add("LineNumber", -1, System.Windows.Forms.HorizontalAlignment.Left);

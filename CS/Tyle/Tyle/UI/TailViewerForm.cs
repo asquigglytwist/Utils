@@ -3,38 +3,43 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Tyle.UI
 {
-    #region TailViewer
-    public partial class frmTailViewer : Form
+    #region TailViewerForm
+    public partial class TailViewerForm : Form
     {
         #region Fields
-        frmMain MainForm;
+        MainForm MainForm;
         TailedStream tailedFile;
         #endregion
 
-        public frmTailViewer(frmMain mdiParentForm, string fileToTail)
+        public TailViewerForm(MainForm mdiParentForm, string fileToTail)
         {
             Hide();
             InitializeComponent();
             MdiParent = MainForm = mdiParentForm;
             lsvTailViewer.ShowGroups = false;
-            tailedFile = new TailedStream(fileToTail/*, this*/);
+            tailedFile = new TailedStream(fileToTail);
             tailedFile.OnTailedFileChanged += TailedFile_OnTailedFileChanged;
+            tailedFile.InitTailing();
             Text = Path.GetFileName(fileToTail);
-            InitDisplay();
+            //InitDisplay();
+            WindowState = FormWindowState.Maximized;
+            //tailedFile.InitTailing();
+            Show();
         }
 
         private void TailedFile_OnTailedFileChanged(object sender, TailedFileChangedArgs args)
         {
             switch (args.ChangeType)
             {
+                case TailedFileChangeType.InitialReadComplete:
                 case TailedFileChangeType.LastLineExtended:
                 case TailedFileChangeType.LinesAdded:
                     // [BIB]:  https://stackoverflow.com/a/661662
                     Invoke((MethodInvoker)delegate { UpdateTailView(); });
-                    //UpdateTailView();
                     break;
                 case TailedFileChangeType.Shrunk:
                     break;
@@ -43,9 +48,8 @@ namespace Tyle.UI
                     break;
                 case TailedFileChangeType.Deleted:
                     MessageBox.Show("File has been deleted.");
-                    Close();
                     break;
-                case TailedFileChangeType.NoChange:
+                case TailedFileChangeType.NoContentChange:
                 default:
                     break;
             }
@@ -53,46 +57,20 @@ namespace Tyle.UI
 
         protected void InitDisplay()
         {
-            WindowState = FormWindowState.Maximized;
-            if (tailedFile.InitTailing())
-            {
-                UpdateTailView();
-            }
-            Show();
         }
 
         protected void UpdateTailView()
         {
-            //lsvTailViewer.BeginUpdate();
             int lineCount = tailedFile.LineCount;
-            //if(lsvTailViewer.VirtualListSize < lineCount)
-            //{
             MainForm.NotifyFileUpdate(Text);
             lsvTailViewer.VirtualListSize = lineCount;
             lsvTailViewer.AutoFitColumnsToContent(tailedFile.LongestLine);
             lsvTailViewer.SelectVirtualItem(tailedFile.LineCount - 1);
-            //    lsvTailViewer.EndUpdate();
-            //    lsvTailViewer.Invalidate();
-            //}
+            // [BIB]:  https://stackoverflow.com/a/30104935
             lsvTailViewer.Refresh();
-
-            //else if (lsvTailViewer.VirtualListSize > lineCount)
-            //{
-            //    // TODO:  Request for a resurrection.
-            //}
-            //else
-            //{
-            //    // No change; Just leave things be.
-            //}
         }
 
-        internal void ActivateAndMaximize()
-        {
-            WindowState = FormWindowState.Maximized;
-            Activate();
-        }
-
-        internal bool FindNextItem()
+        protected bool FindNextItem()
         {
             if (lsvTailViewer.VirtualListSize > 0)
             {
@@ -106,19 +84,26 @@ namespace Tyle.UI
             return false;
         }
 
+        internal void ActivateAndMaximize()
+        {
+            WindowState = FormWindowState.Maximized;
+            Activate();
+        }
+
         #region EventHandlers
         private void lsvTailViewer_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
+            var lineToDisplay = tailedFile[e.ItemIndex];
             e.Item = new ListViewItem((e.ItemIndex + 1).ToString());
             e.Item.UseItemStyleForSubItems = false;
-            e.Item.ToolTipText = e.Item.Text;
+            e.Item.ToolTipText = lineToDisplay;
             if (e.ItemIndex % 8 != 0)
             {
-                e.Item.SubItems.Add(tailedFile[e.ItemIndex], Color.Black, Color.White, lsvTailViewer.Font);
+                e.Item.SubItems.Add(lineToDisplay, Color.LightYellow, Color.Black, lsvTailViewer.Font);
             }
             else
             {
-                e.Item.SubItems.Add(tailedFile[e.ItemIndex], Color.LightYellow, Color.Black, lsvTailViewer.Font);
+                e.Item.SubItems.Add(lineToDisplay, Color.Black, Color.White, lsvTailViewer.Font);
             }
         }
 
@@ -164,7 +149,10 @@ namespace Tyle.UI
 
         private void mnuEFindNext_Click(object sender, EventArgs e)
         {
-            FindNextItem();
+            if(!FindNextItem())
+            {
+                //TODO:  Visual cue (or auditory)
+            }
         }
 
         private void mnuEFindPrev_Click(object sender, EventArgs e)

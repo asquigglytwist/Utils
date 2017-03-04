@@ -13,16 +13,7 @@ namespace Tyle
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new UI.frmMain());
+            Application.Run(new UI.MainForm());
         }
-    }
-
-    public static class AppMetaData
-    {
-        public const string ApplicationName = "Tyle";
-        public const string Description = "Tail Your Logs Efficiently...";
-        public const string CompanyName = "LS";
-        public const string CopyRight = "Copyright © " + CompanyName + ", 2017; All rights reserved.";
-        public const string TradeMark = ApplicationName + ", " + CompanyName;
     }
 }
