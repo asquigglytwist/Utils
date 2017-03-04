@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Tyle.Core
 {
     #region TailedStream
-    class TailedStream : IDisposable
+    public class TailedStream : IDisposable
     {
         #region Fields
-        const int ItemNotFound = -1;
+        const int ItemNotFound = -1, DelayBeforeRaisingEvent = 2000;
         readonly int CRLFLength = Environment.NewLine.Length;
         StreamReader fileStream;
         List<string> lsLinesInFile;
@@ -18,41 +19,23 @@ namespace Tyle.Core
         #endregion
 
         #region Constructor
-        public TailedStream(string filePath)
+        protected TailedStream(string filePath)
         {
             TailedFilePath = filePath;
+            LongestLine = "---";
+            lsLinesInFile = new List<string>();
+        }
+
+        public TailedStream(string filePath, TailedFileChangedHandler changeHandler)
+            : this(filePath)
+        {
+            OnTailedFileChanged += changeHandler;
+            InitTailing();
         }
         #endregion
 
         #region Functions
         #region Public
-        public bool InitTailing()
-        {
-            if (lsLinesInFile != null)
-            {
-                lsLinesInFile.Clear();
-            }
-            lsLinesInFile = new List<string>();
-            if (File.Exists(TailedFilePath))
-            {
-                LongestLine = string.Empty;
-                fileStream = new StreamReader(new FileStream(TailedFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-                if (ReadLinesToEOF())
-                {
-                    WatchFileForChanges(true);
-                    OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.InitialReadComplete, lsLinesInFile.Count));
-                    return true;
-                }
-                return false;
-            }
-            else
-            {
-                WatchFileForChanges(false);
-                OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.Deleted));
-                return true;
-            }
-        }
-
         public void Dispose()
         {
             if (fileStream != null)
@@ -82,6 +65,30 @@ namespace Tyle.Core
         #endregion
 
         #region FileReading
+        protected bool InitTailing()
+        {
+            lsLinesInFile.Clear();
+            if (File.Exists(TailedFilePath))
+            {
+                fileStream = new StreamReader(new FileStream(TailedFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                if (ReadLinesToEOF())
+                {
+                    WatchFileForChanges(true);
+                    // [BIB]:  https://stackoverflow.com/a/34458726
+                    Task.Delay(DelayBeforeRaisingEvent).ContinueWith(t => OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.InitialReadComplete, lsLinesInFile.Count)));
+                    //OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.InitialReadComplete, lsLinesInFile.Count));
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                WatchFileForChanges(false);
+                OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.Deleted));
+                return true;
+            }
+        }
+
         protected bool ReadLinesToEOF()
         {
             string temp;
