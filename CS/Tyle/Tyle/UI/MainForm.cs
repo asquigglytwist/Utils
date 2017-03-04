@@ -1,25 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Tyle.UI
 {
-    public partial class frmMain : Form
+    public partial class MainForm : Form
     {
-        private Dictionary<string, frmTailViewer> mapOpenFiles;
+        private Dictionary<string, TailViewerForm> mapOpenFiles;
 
-        public frmMain()
+        public MainForm()
         {
             InitializeComponent();
+#if DEBUG
+            dlgOpenFile.CheckFileExists = false;
+            dlgOpenFile.CheckPathExists = false;
+#endif
             Icon = Properties.Resources.Tyle;
             Text = AppMetaData.ApplicationName;
             ResetAppState();
+            // [BIB]:  https://stackoverflow.com/questions/1792470/subset-of-array-in-c-sharp
+            OpenFilesForTailing(Environment.GetCommandLineArgs().Skip(1).ToArray());
         }
 
         private void ResetAppState()
         {
             mapOpenFiles?.Clear();
-            mapOpenFiles = new Dictionary<string, frmTailViewer>();
+            mapOpenFiles = new Dictionary<string, TailViewerForm>();
         }
 
         private void OpenFilesForTailing(string[] fileNames)
@@ -37,7 +44,7 @@ namespace Tyle.UI
                 }
                 else
                 {
-                    var tailForm = new frmTailViewer(this, file);
+                    var tailForm = new TailViewerForm(this, file);
                     mapOpenFiles[temp] = tailForm;
                     var newPage = new TabPage(tailForm.Text);
                     newPage.ToolTipText = file;
@@ -127,11 +134,12 @@ namespace Tyle.UI
         {
             LayoutMdi(MdiLayout.ArrangeIcons);
         }
-#endregion
+        #endregion
 
+        #region EventHandlers
         private void frmMain_MdiChildActivate(object sender, EventArgs e)
         {
-            var temp = (ActiveMdiChild as frmTailViewer)?.Text;
+            var temp = (ActiveMdiChild as TailViewerForm)?.Text;
             foreach (TabPage page in tbcMDIChildren.TabPages)
             {
                 if (page.Text.Equals(temp))
@@ -144,7 +152,7 @@ namespace Tyle.UI
 
         private void tbcMDIChildren_SelectedIndexChanged(object sender, EventArgs e)
         {
-            frmTailViewer childForm;
+            TailViewerForm childForm;
             if (tbcMDIChildren.SelectedTab != null && mapOpenFiles.TryGetValue(tbcMDIChildren.SelectedTab.ToolTipText.ToLower(), out childForm))
             {
                 childForm.Activate();
@@ -153,7 +161,8 @@ namespace Tyle.UI
 
         private void mnuHAabout_Click(object sender, EventArgs e)
         {
-            //AboutBox.AppAbout.ShowDialog();
+            AboutBox.AppAbout.ShowDialog();
         }
+        #endregion
     }
 }

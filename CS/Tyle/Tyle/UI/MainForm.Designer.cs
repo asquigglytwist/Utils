@@ -1,6 +1,6 @@
 ﻿namespace Tyle.UI
 {
-    partial class frmMain
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.stsMain = new System.Windows.Forms.StatusStrip();
             this.mnuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -220,7 +220,7 @@
             this.imlMainForm.TransparentColor = System.Drawing.Color.Transparent;
             this.imlMainForm.Images.SetKeyName(0, "NewLinesFound.png");
             // 
-            // frmMain
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -230,7 +230,7 @@
             this.Controls.Add(this.mnuMain);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.mnuMain;
-            this.Name = "frmMain";
+            this.Name = "MainForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.MdiChildActivate += new System.EventHandler(this.frmMain_MdiChildActivate);
             this.mnuMain.ResumeLayout(false);

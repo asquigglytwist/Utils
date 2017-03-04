@@ -1,47 +1,87 @@
-﻿using Tyle.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 
 namespace Tyle.Core
 {
+    #region TailedStream
     class TailedStream : IDisposable
     {
-        public delegate void TailedFileChangedHandler(object sender, TailedFileChangedArgs args);
-        public event TailedFileChangedHandler OnTailedFileChanged;
-
         #region Fields
         const int ItemNotFound = -1;
         readonly int CRLFLength = Environment.NewLine.Length;
         StreamReader fileStream;
         List<string> lsLinesInFile;
         FileSystemWatcher fileWatcher;
-        //frmTailViewer streamOwnerForm;
+        public delegate void TailedFileChangedHandler(object sender, TailedFileChangedArgs args);
+        public event TailedFileChangedHandler OnTailedFileChanged;
         #endregion
 
         #region Constructor
-        public TailedStream(string filePath/*, frmTailViewer ownerForm*/)
+        public TailedStream(string filePath)
         {
             TailedFilePath = filePath;
-            //streamOwnerForm = ownerForm;
         }
         #endregion
 
         #region Functions
+        #region Public
         public bool InitTailing()
         {
-            lsLinesInFile = new List<string>();
-            LongestLine = string.Empty;
-            fileStream = new StreamReader(new FileStream(TailedFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-            if (ReadLinesToEOF())
+            if (lsLinesInFile != null)
             {
-                WatchFileForChanges();
+                lsLinesInFile.Clear();
+            }
+            lsLinesInFile = new List<string>();
+            if (File.Exists(TailedFilePath))
+            {
+                LongestLine = string.Empty;
+                fileStream = new StreamReader(new FileStream(TailedFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                if (ReadLinesToEOF())
+                {
+                    WatchFileForChanges(true);
+                    OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.InitialReadComplete, lsLinesInFile.Count));
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                WatchFileForChanges(false);
+                OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.Deleted));
                 return true;
             }
-            return false;
         }
 
+        public void Dispose()
+        {
+            if (fileStream != null)
+            {
+                fileStream.Dispose();
+            }
+            if (fileWatcher != null)
+            {
+                fileWatcher.Dispose();
+            }
+        }
+
+        public int FindItem(string searchText, int searchStartIndex, bool wrapSearch)
+        {
+            int foundItemIndex = ItemNotFound;
+            if (lsLinesInFile.Count > 0)
+            {
+                searchStartIndex %= lsLinesInFile.Count;
+                foundItemIndex = lsLinesInFile.FindIndex(searchStartIndex, (line => (line.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) > -1)));
+                if (foundItemIndex == ItemNotFound && searchStartIndex != 0 && wrapSearch)
+                {
+                    foundItemIndex = lsLinesInFile.FindIndex(0, (line => (line.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) > ItemNotFound)));
+                }
+            }
+            return foundItemIndex;
+        }
+        #endregion
+
+        #region FileReading
         protected bool ReadLinesToEOF()
         {
             string temp;
@@ -103,46 +143,42 @@ namespace Tyle.Core
                 return false;
             }
         }
+        #endregion
 
-        internal int FindItem(string searchText, int searchStartIndex, bool wrapSearch)
+        #region FileMonitoring
+        protected void WatchFileForChanges(bool fileExists)
         {
-            int foundItemIndex = ItemNotFound;
-            if (lsLinesInFile.Count > 0)
-            {
-                searchStartIndex %= lsLinesInFile.Count;
-                foundItemIndex = lsLinesInFile.FindIndex(searchStartIndex, (line => (line.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) > -1)));
-                if (foundItemIndex == ItemNotFound && searchStartIndex != 0 && wrapSearch)
-                {
-                    foundItemIndex = lsLinesInFile.FindIndex(0, (line => (line.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) > ItemNotFound)));
-                }
-            }
-            return foundItemIndex;
-        }
-
-        public void Dispose()
-        {
-            if (fileStream != null)
-            {
-                fileStream.Dispose();
-            }
             if(fileWatcher != null)
             {
+                // This way there is no need to verify if we are subscribed to events and subsequent need to unsubscribe.
                 fileWatcher.Dispose();
             }
-        }
-
-        protected void WatchFileForChanges()
-        {
-            // [BIB]:  https://stackoverflow.com/questions/721714/notification-when-a-file-changes
+            // [BIB]:  https://stackoverflow.com/a/721743
             fileWatcher = new FileSystemWatcher();
             fileWatcher.Path = Path.GetDirectoryName(TailedFilePath);
-            fileWatcher.NotifyFilter = (NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName);
             fileWatcher.Filter = Path.GetFileName(TailedFilePath);
-            fileWatcher.Changed += new FileSystemEventHandler(OnFileChanged);
-            //watcher.Created += new FileSystemEventHandler(OnChanged);
-            fileWatcher.Deleted += new FileSystemEventHandler(OnFileChanged);
-            fileWatcher.Renamed += new RenamedEventHandler(OnRenamed);
+            if (!fileExists)
+            {
+                fileWatcher.Created += new FileSystemEventHandler(OnFileCreated);
+            }
+            else
+            {
+                fileWatcher.NotifyFilter = (NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName);
+                fileWatcher.Changed += new FileSystemEventHandler(OnFileChanged);
+                fileWatcher.Deleted += new FileSystemEventHandler(OnFileChanged);
+                fileWatcher.Renamed += new RenamedEventHandler(OnRenamed);
+            }
             fileWatcher.EnableRaisingEvents = true;
+        }
+
+        private void OnFileCreated(object source, FileSystemEventArgs e)
+        {
+            InitTailing();
+            var currentSize = new FileInfo(TailedFilePath).Length;
+            if(currentSize>0)
+            {
+                OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.InitialReadComplete, lsLinesInFile.Count));
+            }
         }
 
         private void OnFileChanged(object source, FileSystemEventArgs e)
@@ -155,7 +191,7 @@ namespace Tyle.Core
                     var modTime = File.GetLastWriteTime(TailedFilePath);
                     if (modTime != LastModified)
                     {
-                        TailedFileChangeType temp = TailedFileChangeType.NoChange;
+                        TailedFileChangeType temp = TailedFileChangeType.NoContentChange;
                         int linesRead = lsLinesInFile.Count;
                         var currentSize = new FileInfo(TailedFilePath).Length;
                         if (currentSize > StreamSize)
@@ -203,8 +239,9 @@ namespace Tyle.Core
         {
             // Specify what is done when a file is renamed.
             Console.WriteLine("File: {0} renamed to {1}", e.OldFullPath, e.FullPath);
-            OnTailedFileChanged(this, new TailedFileChangedArgs(TailedFileChangeType.Renamed, e.OldFullPath, e.FullPath));
+            OnTailedFileChanged(this, new TailedFileChangedArgs(e.OldFullPath, e.FullPath));
         }
+        #endregion
         #endregion
 
         #region Properties
@@ -234,7 +271,9 @@ namespace Tyle.Core
         }
         #endregion
     }
+    #endregion
 
+    #region TailedFileChangeType
     /// <summary>
     /// Enumeration of possible changes to the tailed file.
     /// </summary>
@@ -243,13 +282,21 @@ namespace Tyle.Core
         /// <summary>
         /// File's content has not changed; Most likely an attribute change.
         /// </summary>
-        NoChange,
+        NoContentChange,
         /// <summary>
-        /// New lines have been added.
+        /// File's content read and cached (again).
+        /// </summary>
+        InitialReadComplete,
+        /// <summary>
+        /// File created.
+        /// </summary>
+        //Created,  Skip this for now; Add back when nneed arises.
+        /// <summary>
+        /// New lines added.
         /// </summary>
         LinesAdded,
         /// <summary>
-        /// The last line was edited; New lines may or may not have been added.
+        /// The last line was edited; New lines may be added.
         /// </summary>
         LastLineExtended,
         /// <summary>
@@ -257,37 +304,66 @@ namespace Tyle.Core
         /// </summary>
         Shrunk,
         /// <summary>
-        /// File has been renamed.
+        /// File renamed.
         /// </summary>
         Renamed,
         /// <summary>
-        /// File has been deleted.
+        /// File deleted.
         /// </summary>
         Deleted
     }
+    #endregion
 
+    #region TailedFileChangedArgs
     /// <summary>
     /// Provides data for the OnTailedFileChanged event.
     /// </summary>
     public class TailedFileChangedArgs : EventArgs
     {
         // [BIB]:  https://www.codeproject.com/Articles/9355/Creating-advanced-C-custom-events
-        public TailedFileChangedArgs(TailedFileChangeType changeType, int linesRead = 0)
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of TailedFileChangedArgs
+        /// </summary>
+        /// <param name="changeType">Indicates the type of change that has occured.</param>
+        /// <param name="changedLinesCount">Number of lines that have changed.</param>
+        public TailedFileChangedArgs(TailedFileChangeType changeType, int changedLinesCount = 0)
         {
             ChangeType = changeType;
-            LinesRead = linesRead;
+            ChangedLinesCount = changedLinesCount;
         }
 
-        public TailedFileChangedArgs(TailedFileChangeType changeType, string oldPath, string newPath)
-            : this(changeType)
+        /// <summary>
+        /// Initializes a new instance of TailedFileChangedArgs when the file is renamed.
+        /// </summary>
+        /// <param name="oldPath">Fullpath of the file before renaming.</param>
+        /// <param name="newPath">Fullpath of the file after renaming.</param>
+        public TailedFileChangedArgs(string oldPath, string newPath)
+            : this(TailedFileChangeType.Renamed)
         {
             OldFilePath = oldPath;
             NewFilePath = newPath;
         }
+        #endregion
 
+        #region Properties
+        /// <summary>
+        /// Indicates the type of change that this instance of TailedFileChangedArgs represents.
+        /// </summary>
         public TailedFileChangeType ChangeType { get; protected set; }
-        public int LinesRead { get; protected set; }
+        /// <summary>
+        /// Number of lines that have changed.
+        /// </summary>
+        public int ChangedLinesCount { get; protected set; }
+        /// <summary>
+        /// Fullpath of the file before renaming, if the file was renamed.
+        /// </summary>
         public string OldFilePath { get; protected set; }
+        /// <summary>
+        /// Fullpath of the file after renaming, if the file was renamed.
+        /// </summary>
         public string NewFilePath { get; protected set; }
+        #endregion
     }
+    #endregion
 }

@@ -50,35 +50,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppMetaData.cs" />
     <Compile Include="Core\TailedStream.cs" />
+    <Compile Include="UI\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\FindDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\FindDialog.Designer.cs">
       <DependentUpon>FindDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmMain.cs">
+    <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmMain.Designer.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <Compile Include="UI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmTailViewer.cs">
+    <Compile Include="UI\TailViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmTailViewer.Designer.cs">
-      <DependentUpon>frmTailViewer.cs</DependentUpon>
+    <Compile Include="UI\TailViewerForm.Designer.cs">
+      <DependentUpon>TailViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="UI\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\FindDialog.resx">
       <DependentUpon>FindDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <EmbeddedResource Include="UI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmTailViewer.resx">
-      <DependentUpon>frmTailViewer.cs</DependentUpon>
+    <EmbeddedResource Include="UI\TailViewerForm.resx">
+      <DependentUpon>TailViewerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -107,6 +117,9 @@
     <None Include="Resources\Images\Tyle.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>PowerShell """$(ProjectDir)VersionUpdater.ps1"""</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
