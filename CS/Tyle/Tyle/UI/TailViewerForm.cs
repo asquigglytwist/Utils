@@ -21,12 +21,12 @@ namespace Tyle.UI
             InitializeComponent();
             MdiParent = MainForm = mdiParentForm;
             lsvTailViewer.ShowGroups = false;
-            tailedFile = new TailedStream(fileToTail);
-            tailedFile.OnTailedFileChanged += TailedFile_OnTailedFileChanged;
-            tailedFile.InitTailing();
             Text = Path.GetFileName(fileToTail);
             //InitDisplay();
             WindowState = FormWindowState.Maximized;
+            //tailedFile.InitTailing();
+            tailedFile = new TailedStream(fileToTail, TailedFile_OnTailedFileChanged);
+            //tailedFile.OnTailedFileChanged += TailedFile_OnTailedFileChanged;
             //tailedFile.InitTailing();
             Show();
         }
