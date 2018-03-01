@@ -1,0 +1,17 @@
+RepoBaseDir /
+	/ src
+		/ product
+			/ utils.cpp
+			/ abcd.txt
+			/ core.cpp
+			/ core.h
+		/ unit-tests
+			/ test1.cpp
+			/ test2.cpp
+	/resources
+		/ important
+		/ not-important
+	/binaries
+		/ Debug
+		/ Release
+		/ Installer
