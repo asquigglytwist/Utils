@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EngineConfig>
+	<!--
+	Settings to be used by the Engine;
+	Only first occurence takes effect;
+	-->
+	<GeneralSettings>
+	<!--
+	Pipe separated
+	Must have a minimum length of two chars (will be ignored and defaulted to NOT_FOR_REPO|NOT FOR REPO|DO_NOT_CHECKIN|DO_NOT_CHECK_IN|LOCAL_ONLY
+	-->
+	<SrcCodeMarkers>
+		NOT_FOR_REPO|NOT FOR REPO|DO_NOT_CHECKIN|DO_NOT_CHECK_IN|LOCAL_ONLY
+	</SrcCodeMarkers>
+	<!--
+	Time in milliseconds;
+	Min is 2000 and Max is 32767 (max. int value);
+	-->
+	<WaitForProcessExit>
+		20000
+	</WaitForProcessExit>
+	</GeneralSettings>
+	<Rules>
+		<minsize ext="txt">
+			<rule file="/src/product/abcd.txt,abc.txt;" size="1MB" />
+			<rule file="/src/a.txt,b.txt;" size="2MB" />
+		</minsize>
+		<Rule type="minsize" ext="txt" minsize="1MB">
+			/src/product/abcd.txt,abc.txt;
+			/src/a.txt,b.txt;
+		</Rule>
+		<Rule type="maxsize" ext="cpp,txt" maxsize="10MB">
+			/src/product;
+		</Rule>
+		<Rule type="markers" ext="cpp" markers="">
+			/src/product/core.cpp;
+		</Rule>
+		<Rule type="content" ext="cpp" treatAs="image" minWidth="">
+			/src/product/bg.jpg;
+		</Rule>
+		<Rule type="markers" ext="cpp" markers="">
+			/src/product/core.cpp;
+		</Rule>
+	</Rules>
+</EngineConfig>
