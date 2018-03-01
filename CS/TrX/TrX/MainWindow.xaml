@@ -1,0 +1,24 @@
+﻿<Window x:Class="TrX.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TrX" Height="599" Width="872">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush SpreadMethod="Pad" MappingMode="RelativeToBoundingBox" Opacity="1">
+                <LinearGradientBrush.GradientStops>
+                    <GradientStop Offset="0.05" Color="Black" />
+                    <GradientStop Offset="0.15" Color="#FF212121" />
+                    <GradientStop Offset="0.3" Color="#FF313131" />
+                    <GradientStop Offset="0.45" Color="#FF414141" />
+                    <GradientStop Offset="0.7" Color="#FF313131" />
+                    <GradientStop Offset="0.8" Color="#FF212121" />
+                    <GradientStop Offset="0.9" Color="#FF111111" />
+                    <GradientStop Offset="0.98" Color="Black" />
+                </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <ScrollViewer>
+            
+        </ScrollViewer>
+    </Grid>
+</Window>
