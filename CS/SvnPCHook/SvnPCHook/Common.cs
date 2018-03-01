@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace Lavnok.SvnPCHook
+namespace ASquigglyTwist.SvnPCHook
 {
     class Common
     {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
 
-namespace Lavnok.SvnPCHook
+namespace ASquigglyTwist.SvnPCHook
 {
     class Program
     {
@@ -26,8 +26,10 @@ namespace Lavnok.SvnPCHook
                     Environment.Exit(1);
                 }
             }
-            if(!isTSvnInstalled())
+            if (!isTSvnInstalled())
+            {
                 Environment.Exit(1);
+            }
             string[] sAffectedPaths = File.ReadAllLines(args[0]);
             int iTotalMarkersFound = 0;
             try
@@ -65,7 +67,9 @@ namespace Lavnok.SvnPCHook
             const string SVNLookName = "bin\\svn.exe";
             RegistryKey rkTSVN = Registry.LocalMachine.OpenSubKey("SOFTWARE\\TortoiseSVN");
             if (null == rkTSVN)
+            {
                 rkTSVN = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\TortoiseSVN");
+            }
             if (null == rkTSVN)
             {
                 Console.Error.WriteLine("Unable to find TortoiseSVN installation.");
@@ -73,9 +77,13 @@ namespace Lavnok.SvnPCHook
             }
             sTSVNPath = (string)rkTSVN.GetValue("Directory");
             if (rkTSVN != null)
+            {
                 rkTSVN.Close();
+            }
             if (!sTSVNPath.EndsWith("\\") && !sTSVNPath.EndsWith("/"))
+            {
                 sTSVNPath += "\\";
+            }
             sTSVNPath += SVNLookName;
             psiDiffGen = new ProcessStartInfo(sTSVNPath);
             psiDiffGen.CreateNoWindow = true;

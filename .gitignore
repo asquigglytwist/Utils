@@ -1,3 +1,5 @@
 *.suo
 *.sdf
 *.ipch
+bin
+obj
