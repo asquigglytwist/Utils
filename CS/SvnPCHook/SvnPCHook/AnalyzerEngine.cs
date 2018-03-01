@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace Lavnok.SvnPCHook
+namespace ASquigglyTwist.SvnPCHook
 {
     class AnalyzerEngine
     {
