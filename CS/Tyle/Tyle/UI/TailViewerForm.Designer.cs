@@ -63,7 +63,7 @@ namespace Tyle.UI
             this.tssAfterCopy,
             this.mnuEFind,
             this.mnuEFindNext});
-            this.mnuEdit.MergeAction = System.Windows.Forms.MergeAction.Replace;
+            this.mnuEdit.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.mnuEdit.MergeIndex = 1;
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(47, 24);
@@ -73,20 +73,20 @@ namespace Tyle.UI
             // 
             this.mnuECopy.Name = "mnuECopy";
             this.mnuECopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.mnuECopy.Size = new System.Drawing.Size(171, 26);
+            this.mnuECopy.Size = new System.Drawing.Size(181, 26);
             this.mnuECopy.Text = "&Copy";
             this.mnuECopy.Click += new System.EventHandler(this.mnuECopy_Click);
             // 
             // tssAfterCopy
             // 
             this.tssAfterCopy.Name = "tssAfterCopy";
-            this.tssAfterCopy.Size = new System.Drawing.Size(168, 6);
+            this.tssAfterCopy.Size = new System.Drawing.Size(178, 6);
             // 
             // mnuEFind
             // 
             this.mnuEFind.Name = "mnuEFind";
             this.mnuEFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mnuEFind.Size = new System.Drawing.Size(171, 26);
+            this.mnuEFind.Size = new System.Drawing.Size(181, 26);
             this.mnuEFind.Text = "&Find";
             this.mnuEFind.Click += new System.EventHandler(this.mnuEFind_Click);
             // 
@@ -95,7 +95,7 @@ namespace Tyle.UI
             this.mnuEFindNext.Enabled = false;
             this.mnuEFindNext.Name = "mnuEFindNext";
             this.mnuEFindNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mnuEFindNext.Size = new System.Drawing.Size(171, 26);
+            this.mnuEFindNext.Size = new System.Drawing.Size(181, 26);
             this.mnuEFindNext.Text = "Find &Next";
             this.mnuEFindNext.Click += new System.EventHandler(this.mnuEFindNext_Click);
             // 
@@ -108,9 +108,11 @@ namespace Tyle.UI
             this.lsvTailViewer.FullRowSelect = true;
             this.lsvTailViewer.GridLines = true;
             this.lsvTailViewer.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.lsvTailViewer.Location = new System.Drawing.Point(0, 0);
+            this.lsvTailViewer.Location = new System.Drawing.Point(0, 28);
             this.lsvTailViewer.Name = "lsvTailViewer";
-            this.lsvTailViewer.Size = new System.Drawing.Size(282, 253);
+            this.lsvTailViewer.ShowGroups = false;
+            this.lsvTailViewer.ShowItemToolTips = true;
+            this.lsvTailViewer.Size = new System.Drawing.Size(282, 225);
             this.lsvTailViewer.TabIndex = 0;
             this.lsvTailViewer.UseCompatibleStateImageBehavior = false;
             this.lsvTailViewer.View = System.Windows.Forms.View.Details;

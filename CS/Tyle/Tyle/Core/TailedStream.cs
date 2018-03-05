@@ -14,7 +14,7 @@ namespace Tyle.Core
         StreamReader fileStream;
         List<string> lsLinesInFile;
         FileSystemWatcher fileWatcher;
-        public delegate void TailedFileChangedHandler(object sender, TailedFileChangedArgs args);
+        public delegate void TailedFileChangedHandler(object sender, TailedFileChangedArgs e);
         public event TailedFileChangedHandler OnTailedFileChanged;
         #endregion
 
@@ -38,13 +38,22 @@ namespace Tyle.Core
         #region Public
         public void Dispose()
         {
-            if (fileStream != null)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                fileStream.Dispose();
-            }
-            if (fileWatcher != null)
-            {
-                fileWatcher.Dispose();
+                if (fileStream != null)
+                {
+                    fileStream.Dispose();
+                }
+                if (fileWatcher != null)
+                {
+                    fileWatcher.Dispose();
+                }
             }
         }
 
