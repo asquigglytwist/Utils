@@ -50,6 +50,7 @@
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.tbcMDIChildren = new System.Windows.Forms.TabControl();
             this.imlMainForm = new System.Windows.Forms.ImageList(this.components);
+            this.mnuPHighlighting = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -135,6 +136,8 @@
             // 
             // mnuPrefs
             // 
+            this.mnuPrefs.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuPHighlighting});
             this.mnuPrefs.Name = "mnuPrefs";
             this.mnuPrefs.Size = new System.Drawing.Size(97, 24);
             this.mnuPrefs.Text = "&Preferences";
@@ -220,6 +223,13 @@
             this.imlMainForm.TransparentColor = System.Drawing.Color.Transparent;
             this.imlMainForm.Images.SetKeyName(0, "NewLinesFound.png");
             // 
+            // mnuPHighlighting
+            // 
+            this.mnuPHighlighting.Name = "mnuPHighlighting";
+            this.mnuPHighlighting.Size = new System.Drawing.Size(181, 26);
+            this.mnuPHighlighting.Text = "&Highlighting";
+            this.mnuPHighlighting.Click += new System.EventHandler(this.mnuPHighlighting_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -262,6 +272,7 @@
         private System.Windows.Forms.TabControl tbcMDIChildren;
         private System.Windows.Forms.ImageList imlMainForm;
         private System.Windows.Forms.ToolStripMenuItem mnuHAabout;
+        private System.Windows.Forms.ToolStripMenuItem mnuPHighlighting;
     }
 }
 

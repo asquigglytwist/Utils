@@ -164,5 +164,10 @@ namespace Tyle.UI
             AboutBox.AppAbout.ShowDialog();
         }
         #endregion
+
+        private void mnuPHighlighting_Click(object sender, EventArgs e)
+        {
+            Highlighter.visualCues.ShowDialog();
+        }
     }
 }
