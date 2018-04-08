@@ -2,6 +2,10 @@
 A set of Utilities that I'd created along my way as a Developer - categorized by language.
 Hoping to add a few more along the way when I get the time [i.e., get my lazy self motivated enough to do that. :-)].
 
+CI (via [AppVeyor](https://www.appveyor.com/))
+
+[![Build status](https://ci.appveyor.com/api/projects/status/ya0wgfs81aqyswjk/branch/master?svg=true)](https://ci.appveyor.com/project/asquigglytwist/utils/branch/master)
+
 ## Utils Currently In Repo
 ### CPP
 * [PokeReg](https://github.com/asquigglytwist/Utils/tree/master/CPP/PokeReg)<br />
