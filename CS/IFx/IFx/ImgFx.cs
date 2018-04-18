@@ -10,7 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 #endregion
 
-namespace Igrans
+namespace ASquigglyTwist
 {
     namespace IFx
     {

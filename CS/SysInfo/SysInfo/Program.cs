@@ -1,18 +1,11 @@
-﻿#region Includes
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-#endregion
 
 namespace ASquigglyTwist
 {
-    namespace IFx
+    namespace SysInfo
     {
         static class Program
         {
@@ -24,8 +17,7 @@ namespace ASquigglyTwist
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                GC.Collect();
-                Application.Run(new ImgFx());
+                Application.Run(new SysInfo());
             }
         }
     }
