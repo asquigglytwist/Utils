@@ -9,38 +9,35 @@ using System.Windows.Forms;
 
 namespace ASquigglyTwist
 {
-    namespace IFx
+    public partial class InputBox : Form
     {
-        public partial class InputBox : Form
+        ImgFx hPg;
+
+        public InputBox(ImgFx HPg)
         {
-            ImgFx hPg;
+            InitializeComponent();
+            hPg = HPg;
+        }
 
-            public InputBox(ImgFx HPg)
+        /// <summary>
+        /// The Value specified by the user in the Numeric UpDown box
+        /// </summary>
+        internal double SizeValue
+        {
+            get
             {
-                InitializeComponent();
-                hPg = HPg;
+                return Convert.ToDouble(spnSize.Value);
             }
+        }
 
-            /// <summary>
-            /// The Value specified by the user in the Numeric UpDown box
-            /// </summary>
-            internal double SizeValue
-            {
-                get
-                {
-                    return Convert.ToDouble(spnSize.Value);
-                }
-            }
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+        }
 
-            private void btnOk_Click(object sender, EventArgs e)
-            {
-                this.DialogResult = DialogResult.OK;
-            }
-
-            private void btnCancel_Click(object sender, EventArgs e)
-            {
-                this.DialogResult = DialogResult.Cancel;
-            }
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
         }
     }
 }
