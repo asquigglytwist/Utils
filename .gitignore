@@ -6,3 +6,5 @@ obj
 .vs
 *.user
 *.aps
+*.vc.db
+Intermediate
