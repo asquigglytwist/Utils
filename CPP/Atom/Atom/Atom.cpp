@@ -247,7 +247,7 @@ namespace NSAtom
         {
             return;
         }
-        tcout << NEW_LINE DOUBLE_TAB_INDENT BLOCK_SEPARATOR NEW_LINE DOUBLE_TAB_INDENT NAME_OF_TOOL _T(" ::  For any doubts, please contact SAE / VSES team.") NEW_LINE DOUBLE_TAB_INDENT BLOCK_SEPARATOR NEW_LINE;
+        tcout << NEW_LINE DOUBLE_TAB_INDENT BLOCK_SEPARATOR NEW_LINE DOUBLE_TAB_INDENT NAME_OF_TOOL _T(" ::  For any doubts, please contact ASquigglyTwist.") NEW_LINE DOUBLE_TAB_INDENT BLOCK_SEPARATOR NEW_LINE;
     }
 
     void PrintUsageInfo(bool bPauseForInteraction)
