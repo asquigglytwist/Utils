@@ -3,6 +3,12 @@
 #(Get-Content .\AppMetaData.cs).Replace('[PS_Stub_Time]', (Get-Date).ToString("hhmmssfff")) | Set-Content .\AppMetaData.cs
 #pause
 
-$content = [System.IO.File]::ReadAllText(".\AppMetaData.cs.Template").Replace("[PS_Stub_Date]", ((Get-Date).ToString("yyMMdd"))).Replace("[PS_Stub_Time]", ((Get-Date).ToString("hhmmss"))).Replace("[PS_Stub_CopyRightYear]", ((Get-Date).ToString("yyyy")))
-[System.IO.File]::WriteAllText(".\AppMetaData.cs", $content)
+param (
+	[Parameter(Mandatory=$true)][string]$projectDir
+)
+$startTime=(Get-Date)
+$templateFilePath = [System.IO.Path]::Combine($projectDir, ".\AppMetaData.cs.Template")
+$targetFilePath = [System.IO.Path]::Combine($projectDir, ".\AppMetaData.cs")
+$content = [System.IO.File]::ReadAllText($templateFilePath).Replace("[PS_Stub_Date]", (($startTime).ToString("yyMMdd"))).Replace("[PS_Stub_Time]", (($startTime).ToString("HHmmss"))).Replace("[PS_Stub_CopyRightYear]", (($startTime).ToString("yyyy")))
+[System.IO.File]::WriteAllText($targetFilePath, $content)
 pause
