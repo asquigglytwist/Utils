@@ -11,8 +11,8 @@
         // [BIB]:  https://stackoverflow.com/questions/64602/what-are-differences-between-assemblyversion-assemblyfileversion-and-assemblyin
         private const string major = "0";
         private const string minor = "1";
-        private const string build = "0";
-        private const string revision = "0";
+        private const string build = "[PS_Stub_Date]";
+        private const string revision = "[PS_Stub_Time]";
         public const string ProductVersion = major + "." + minor + ".0.0";
         public const string AssemblyVersion = major + "." + minor + "." + build + "." + revision;
         // [BIB]:  https://stackoverflow.com/questions/17144355/how-can-i-replace-every-occurrence-of-a-string-in-a-file-with-powershell
